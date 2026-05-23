@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+/* ─── Design tokens ─────────────────────────────────────── */
+@theme {
+  --color-ink:       #1f1a24;
+  --color-ink-soft:  #4a4452;
+  --color-paper:     #fbfaf7;
+  --color-paper-2:   #f4f2ec;
+  --color-bg:        #ebe8e0;
+  --color-line:      #1f1a24;
+  --color-pink:      #f4c8d4;
+  --color-pink-soft: #fde6ec;
+  --color-lav:       #c9b6e4;
+  --color-lav-soft:  #ece4f7;
+  --color-purple:    #6f4f9b;
+  --color-green:     #d8e8b8;
+
+  /* Font — variable is injected by next/font via .font-jost class on <html> */
+  --font-sans: var(--font-jost, "Jost", system-ui, sans-serif);
+}
+
+/* ─── Global reset & base ───────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0; padding: 0;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+}
+
+@layer base {
+  a { cursor: pointer; text-decoration: none; color: inherit; }
+}
+
+/* ─── Reusable utilities not covered by Tailwind alone ──── */
+
+/* 1.5px dashed divider */
+.h-line {
+  border: 0;
+  border-top: 1.5px dashed rgba(31, 26, 36, 0.3);
+  margin: 16px 0;
+}
+
+/* section separator */
+.section-divider {
+  border-bottom: 1.5px dashed rgba(31, 26, 36, 0.2);
+}
+
+/* Последняя секция перед футером не должна давать пунктир */
+.section-divider:last-child {
+  border-bottom: none;
+}

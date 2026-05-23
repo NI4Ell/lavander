@@ -1,0 +1,1756 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<title>Лавандер — Букетная мастерская</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+
+  :root {
+    --ink: #1f1a24;
+    --ink-soft: #4a4452;
+    --paper: #fbfaf7;
+    --paper-2: #f4f2ec;
+    --line: #1f1a24;
+    --pink: #f4c8d4;
+    --pink-soft: #fde6ec;
+    --lav: #c9b6e4;
+    --lav-soft: #ece4f7;
+    --purple: #6f4f9b;
+    --green: #d8e8b8;
+  }
+
+  html, body {
+    margin: 0; padding: 0;
+    background: #ebe8e0;
+    color: var(--ink);
+    font-family: "Jost", system-ui, sans-serif;
+    min-height: 100vh;
+  }
+
+  a { cursor: pointer; text-decoration: none; color: inherit; }
+
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ===== PLACEHOLDER ===== */
+  .ph {
+    background: repeating-linear-gradient(135deg, transparent 0 10px, rgba(31,26,36,0.08) 10px 11px);
+    border: 1.5px solid var(--line);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink-soft);
+    font-size: 15px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .ph.x::after {
+    content: ""; position: absolute; inset: 0;
+    background:
+      linear-gradient(to top right, transparent calc(50% - 1px), rgba(31,26,36,0.25) 50%, transparent calc(50% + 1px)),
+      linear-gradient(to top left, transparent calc(50% - 1px), rgba(31,26,36,0.25) 50%, transparent calc(50% + 1px));
+    pointer-events: none;
+  }
+
+  /* ===== HEADER ===== */
+  .jh-top {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 18px 36px;
+    background: var(--lav);
+    border-bottom: 1.5px solid var(--line);
+  }
+  .burger-btn { display: none; }
+  .burger-menu { display: none; }
+  .burger-overlay { display: none; }
+  .jh-top-left { font-size: 18px; display: flex; gap: 24px; }
+  .jh-top-left a {
+    cursor: pointer;
+    border-bottom: 1.5px dashed transparent;
+    padding-bottom: 2px;
+    transition: border-color 0.15s;
+  }
+  .jh-top-left a:hover { border-bottom-color: var(--ink); }
+  .jh-top-right { display: flex; align-items: center; gap: 12px; justify-content: flex-end; font-size: 18px; }
+
+  .circle-ic {
+    width: 32px; height: 32px; border-radius: 50%;
+    border: 1.5px solid var(--line);
+    background: var(--paper);
+    display: grid; place-items: center;
+    font-size: 16px; font-family: "Jost", sans-serif;
+    cursor: pointer;
+  }
+  .cart-btn {
+    border: 1.5px solid var(--line); border-radius: 8px;
+    padding: 6px 18px; background: var(--paper);
+    font-family: "Jost", sans-serif; font-size: 18px;
+    cursor: pointer;
+  }
+  .jh-logo { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; cursor: pointer; }
+  .jh-logo img {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1.5px solid var(--line);
+    display: block;
+  }
+
+  /* NAV */
+  .jh-nav {
+    background: #6f4f9b;
+    color: var(--paper);
+    display: flex;
+    justify-content: center;
+    gap: 36px;
+    padding: 16px 24px;
+    font-family: "Jost", sans-serif;
+    font-size: 22px;
+    text-transform: lowercase;
+    flex-wrap: wrap;
+  }
+  .jh-nav a { color: var(--paper); opacity: 0.75; transition: opacity 0.15s; }
+  .jh-nav a:hover { opacity: 1; }
+  .jh-nav a.active { opacity: 1; color: var(--pink-soft); }
+
+  /* PROMO */
+  .jh-promo {
+    background: var(--lav-soft);
+    color: var(--ink);
+    text-align: center;
+    padding: 12px 16px;
+    font-family: "Jost", sans-serif;
+    font-size: 20px;
+    border-bottom: 1.5px solid var(--line);
+  }
+
+  /* ===== SHARED ===== */
+  .hand { font-family: "Jost", sans-serif; }
+  .hand-title { font-family: "Jost", sans-serif; font-size: 24px; color: #6f4f9b; }
+
+  .h-line { border: 0; border-top: 1.5px dashed rgba(31,26,36,0.3); margin: 16px 0; }
+
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 14px;
+    border: 1.5px solid var(--line);
+    border-radius: 999px;
+    font-family: "Jost", sans-serif; font-size: 14px;
+    background: var(--paper);
+    cursor: pointer;
+  }
+  .pill.solid { background: var(--lav); }
+
+  .jh-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .qty {
+    display: inline-flex; align-items: center;
+    border: 1.5px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+    width: max-content;
+    font-family: "Jost", sans-serif;
+    font-size: 22px;
+  }
+  .qty span {
+    flex: 0 0 42px;
+    width: 42px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; padding: 6px 0;
+  }
+  .qty span svg { display: block; }
+  .qty b { padding: 6px 18px; border-left: 1.5px solid var(--line); border-right: 1.5px solid var(--line); min-width: 50px; text-align: center; display: block; }
+
+  .acc {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 16px;
+    border: 1.5px solid var(--line);
+    border-radius: 8px;
+    background: var(--paper-2);
+    font-family: "Jost", sans-serif;
+    font-size: 20px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .acc:hover { background: var(--lav-soft); }
+  .acc.open { background: var(--lav-soft); border-radius: 8px 8px 0 0; }
+  .acc-body {
+    display: none;
+    padding: 16px;
+    border: 1.5px solid var(--line); border-top: none;
+    border-radius: 0 0 8px 8px;
+    background: var(--lav-soft);
+    font-size: 15px; line-height: 1.55; color: var(--ink-soft);
+  }
+  .acc-body.open { display: block; }
+
+  /* card message */
+  .card-msg-block {
+    display: none; margin-top: 6px; margin-bottom: 2px;
+  }
+  .card-msg-block.visible { display: block; }
+  .card-msg-textarea {
+    width: 100%; resize: vertical; min-height: 72px;
+    font-family: "Jost", sans-serif; font-size: 15px;
+    line-height: 1.5; box-sizing: border-box;
+  }
+
+  /* time dropdown */
+  .time-select-wrap { position: relative; }
+  .time-select-trigger {
+    display: flex; justify-content: space-between; align-items: center;
+    cursor: pointer; user-select: none;
+  }
+  .time-arrow { font-size: 14px; color: #8a7aaa; transition: transform 0.2s; }
+  .time-arrow.open { transform: rotate(180deg); }
+  .time-dropdown {
+    display: none; position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+    background: #fff; border: 1.5px solid #d8cce8; border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(111,79,155,.12);
+    z-index: 100; overflow: hidden;
+  }
+  .time-dropdown.open { display: block; }
+  .time-dropdown div {
+    padding: 10px 16px; font-family: "Jost", sans-serif; font-size: 15px;
+    cursor: pointer; color: var(--ink);
+    transition: background 0.12s;
+  }
+  .time-dropdown div:hover { background: var(--lav-soft); }
+  .time-option-active { font-weight: 600; color: #6f4f9b !important; }
+
+  .jh-checkbox {
+    width: 22px; height: 22px;
+    border: 1.5px solid #b8a8d0;
+    border-radius: 5px;
+    background: #fff;
+    flex-shrink: 0; cursor: pointer;
+    position: relative;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .jh-checkbox.checked {
+    background: var(--lav);
+    border-color: var(--lav);
+  }
+  .jh-checkbox.checked::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6.5l3 3 5-6' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E") center / 65% no-repeat;
+  }
+
+  .jh-section-title {
+    font-family: "Jost", sans-serif;
+    font-size: 44px;
+    text-align: center;
+    margin: 0 0 20px;
+    color: #6f4f9b;
+    font-weight: 600;
+  }
+
+  /* ===== FOOTER ===== */
+  .jh-footer {
+    background: var(--lav);
+    padding: 36px 60px 28px;
+    border-top: 1.5px solid var(--line);
+  }
+  .jh-footer-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1.4fr 1fr 1fr;
+    gap: 30px;
+    font-family: "Jost", sans-serif;
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+  .jh-footer-grid h4 { font-size: 22px; margin: 0 0 10px; color: var(--ink); font-weight: 600; }
+  .jh-footer-grid p { margin: 4px 0; line-height: 1.45; }
+  .footer-logo img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--line); }
+  .jh-soc { display: flex; gap: 8px; margin-top: 14px; }
+  .jh-footer-pay { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 14px; }
+  .jh-footer-pay .pay {
+    font-size: 16px;
+    border: 1.5px solid var(--line); border-radius: 6px;
+    padding: 4px 12px; background: var(--paper);
+  }
+  .jh-footer-legal { margin-top: 16px; font-size: 14px; color: var(--ink-soft); }
+
+  /* ===== HOME PAGE ===== */
+  .jh-section {
+    padding: 40px 60px 28px;
+    border-bottom: 1.5px dashed rgba(31,26,36,0.2);
+  }
+  .jh-section:first-of-type .jh-section-title {
+    font-size: 48px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+  .jh-section-tools {
+    display: flex; align-items: center; justify-content: flex-end;
+    gap: 14px; margin-bottom: 18px; font-size: 16px;
+  }
+  .select-span {
+    border: 1.5px solid var(--line);
+    border-radius: 6px;
+    padding: 6px 14px;
+    background: var(--paper);
+    font-family: "Jost", sans-serif; font-size: 14px;
+    cursor: pointer;
+  }
+
+  .prod-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px 28px;
+  }
+  .prod {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 6px; position: relative; text-align: center;
+  }
+  .prod-img {
+    width: 100%; aspect-ratio: 4/5;
+    border-radius: 4px; margin-bottom: 4px;
+  }
+  .prod-badge {
+    position: absolute; top: 12px; right: 12px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--green);
+    border: 1.5px solid var(--line);
+    display: grid; place-items: center;
+    font-family: "Jost", sans-serif; font-weight: 700; font-size: 14px;
+    color: var(--ink); z-index: 2;
+  }
+  .prod-add {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 80%;
+    padding: 9px 12px;
+    background: var(--lav);
+    border: 1.5px solid var(--line);
+    border-radius: 6px;
+    font-family: "Jost", sans-serif; font-size: 17px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .prod-add:hover { background: var(--pink-soft); }
+  .prod-price { font-family: "Jost", sans-serif; font-size: 18px; margin-top: 2px; }
+  .prod-ttl { font-family: "Jost", sans-serif; font-size: 18px; color: var(--ink-soft); }
+
+  .jh-section-more { display: flex; justify-content: center; margin-top: 22px; }
+  .btn-load {
+    padding: 10px 28px;
+    border: 1.5px solid var(--line); border-radius: 6px;
+    background: var(--lav);
+    font-family: "Jost", sans-serif; font-size: 20px;
+    color: var(--ink-soft); cursor: pointer;
+    transition: background 0.15s;
+  }
+  .btn-load:hover { background: var(--pink-soft); }
+
+  /* ===== PRODUCT PAGE ===== */
+  .jh-crumbs { padding: 16px 60px; font-size: 16px; color: var(--ink-soft); }
+  .jh-crumbs a { color: var(--purple); }
+
+  .jh-product {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 36px;
+    padding: 0 60px 40px;
+  }
+  .jh-prod-gallery .main-ph { width: 100%; aspect-ratio: 1/1; }
+  .jh-thumbs { margin-top: 12px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .jh-thumbs .ph { height: 90px; }
+  .jh-prod-info { display: flex; flex-direction: column; gap: 12px; }
+  .jh-art { font-size: 16px; color: var(--ink-soft); }
+  .jh-prod-info h1 {
+    font-family: "Jost", sans-serif;
+    font-size: 56px; margin: 0;
+    color: #6f4f9b; line-height: 0.95;
+  }
+  .jh-prod-price { font-family: "Jost", sans-serif; font-size: 36px; }
+  .jh-prod-desc { font-size: 16px; line-height: 1.45; color: var(--ink-soft); margin: 0; }
+  .jh-prod-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; font-size: 18px; }
+
+  .jh-addons {
+    margin-top: 4px;
+    padding: 14px 16px;
+    border: 1.5px dashed var(--line);
+    border-radius: 10px;
+    background: var(--paper-2);
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .jh-addon {
+    display: flex; align-items: center; gap: 12px;
+    padding: 8px 10px; border-radius: 8px;
+    cursor: pointer; transition: background 0.15s;
+  }
+  .jh-addon:hover { background: var(--paper); }
+  .jh-addon-name { flex: 1; font-family: "Jost", sans-serif; font-size: 22px; }
+  .jh-addon-sub { color: var(--ink-soft); font-size: 16px; }
+  .jh-addon-price { font-family: "Jost", sans-serif; font-size: 20px; color: #6f4f9b; }
+
+  .btn-buy {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 16px 28px;
+    background: var(--ink); color: var(--paper);
+    border: 1.5px solid var(--line); border-radius: 8px;
+    font-family: "Jost", sans-serif; font-size: 24px;
+    margin-top: 8px; cursor: pointer; width: 100%;
+    transition: opacity 0.15s;
+  }
+  .btn-buy:hover { opacity: 0.85; }
+
+  .jh-prod-ship { font-size: 18px; color: var(--ink-soft); margin-top: 6px; }
+  .jh-prod-note {
+    margin-top: 14px; padding: 14px 18px;
+    background: var(--lav-soft);
+    border: 1.5px solid var(--line); border-radius: 10px;
+    font-family: "Jost", sans-serif; font-size: 15px;
+    line-height: 1.5; color: var(--ink); text-align: left;
+  }
+  .jh-prod-acc { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+
+  .care-list { display: flex; flex-direction: column; gap: 10px; }
+  .care-item { display: flex; gap: 10px; align-items: flex-start; }
+  .care-check { color: #6f4f9b; font-weight: 700; margin-top: 1px; flex-shrink: 0; }
+  .chrysal-block {
+    margin-top: 6px; padding: 14px 16px;
+    border-radius: 10px; background: var(--pink-soft);
+    border: 1.5px solid var(--line);
+  }
+  .chrysal-title { font-size: 16px; font-weight: 700; color: #6f4f9b; margin-bottom: 6px; }
+  .chrysal-text { font-size: 14px; line-height: 1.55; }
+
+  /* ===== CART PAGE ===== */
+  .jh-cart { padding: 30px 60px 50px; }
+  .jh-cart-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 30px; align-items: start;
+  }
+  .jh-cart-list { display: flex; flex-direction: column; gap: 14px; }
+  .cart-row {
+    display: flex; align-items: center; gap: 16px;
+    border: 1.5px solid var(--line); border-radius: 10px;
+    padding: 14px; background: var(--paper);
+  }
+  .cart-ph { width: 110px; height: 110px; flex-shrink: 0; border-radius: 4px; }
+  .cart-info { flex: 1; order: 1; }
+  /* On desktop cart-row-bottom becomes transparent so qty/price join the flex */
+  .cart-row-bottom { display: contents; }
+  .cart-row .qty   { order: 2; }
+  .cart-price      { order: 3; }
+  .cart-x          { order: 4; }
+  .cart-ttl { font-family: "Jost", sans-serif; font-size: 24px; color: #6f4f9b; }
+  .cart-sub { color: var(--ink-soft); margin-top: 4px; font-size: 14px; }
+  .cart-price { font-family: "Jost", sans-serif; font-size: 24px; min-width: 90px; text-align: right; }
+  .cart-x { font-size: 28px; color: var(--ink-soft); cursor: pointer; transition: color 0.15s; }
+  .cart-x:hover { color: #b04a6a; }
+
+  .jh-cart-side {
+    border: 1.5px solid var(--line); border-radius: 12px;
+    padding: 20px 22px; background: var(--lav-soft);
+    position: sticky; top: 20px;
+  }
+  .cart-line { display: flex; justify-content: space-between; margin: 6px 0; font-size: 16px; }
+  .cart-line.big { font-family: "Jost", sans-serif; font-size: 26px; color: var(--ink); font-weight: 700; }
+  .cart-form { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+
+  .input-field {
+    border: 1.5px solid var(--line); border-radius: 6px;
+    padding: 6px 14px; background: var(--paper);
+    font-family: "Jost", sans-serif;
+    color: var(--ink-soft); font-size: 14px;
+    width: 100%; outline: none; transition: border-color 0.15s;
+  }
+  .input-field:focus { border-color: var(--purple); }
+
+  .pickup-note { font-size: 14px; color: var(--ink-soft); margin-top: -4px; display: none; }
+  .pickup-note.visible { display: block; }
+
+  .jh-photo-block {
+    margin-top: 14px; padding: 14px;
+    border: 1.5px dashed var(--line); border-radius: 10px;
+    background: var(--pink-soft);
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .jh-photo-toggle { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+  .jh-photo-hint { font-size: 15px; color: var(--ink-soft); margin-left: 34px; margin-top: -2px; }
+  .jh-photo-input { display: none; flex-direction: column; gap: 4px; }
+  .jh-photo-input.visible { display: flex; }
+  .jh-photo-input-label { font-size: 15px; color: var(--ink-soft); margin-bottom: 4px; }
+
+  .pay-only-online { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+
+  /* ===== ABOUT PAGE ===== */
+  .jh-about-hero {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 30px; padding: 40px 60px; align-items: center;
+  }
+  .jh-about-hero p { font-size: 18px; line-height: 1.5; max-width: 480px; color: var(--ink-soft); margin: 0; }
+  .about-hero-img { aspect-ratio: 4/3; border-radius: 18px; }
+
+  .big-h {
+    font-family: "Jost", sans-serif;
+    font-size: 64px; line-height: 1;
+    color: #6f4f9b; margin: 8px 0;
+    font-weight: 700;
+  }
+  .big-h.center { text-align: center; }
+
+  .jh-about-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 16px; padding: 0 60px 40px;
+  }
+  .stat {
+    border: 1.5px solid var(--line); border-radius: 14px;
+    padding: 18px; background: var(--lav-soft); text-align: center;
+  }
+  .stat b { font-family: "Jost", sans-serif; font-size: 42px; color: #6f4f9b; display: block; font-weight: 700; }
+  .stat .hand { font-size: 16px; color: var(--ink-soft); }
+
+  .jh-about-text { padding: 30px 60px; }
+  .jh-about-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .jh-about-cols h3 { font-family: "Jost", sans-serif; font-size: 30px; margin: 0 0 6px; color: #6f4f9b; }
+  .jh-about-cols p { font-size: 16px; line-height: 1.5; color: var(--ink-soft); margin: 0; }
+
+  .jh-about-gallery { padding: 30px 60px 50px; }
+  .gallery-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 160px; gap: 12px;
+  }
+
+  /* ===== DELIVERY PAGE ===== */
+  .jh-delivery { padding: 40px 60px; }
+  .jh-lead { font-size: 18px; text-align: center; max-width: 640px; margin: 0 auto 30px; color: var(--ink-soft); line-height: 1.5; }
+  .jh-lead.center { text-align: center; }
+
+  .jh-individual {
+    border: 1.5px solid var(--line); border-radius: 18px;
+    padding: 30px 40px; background: var(--lav-soft);
+    text-align: center; margin-bottom: 40px;
+  }
+  .jh-individual-row {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 16px; margin-top: 22px;
+  }
+  .ind-item {
+    background: var(--paper); border: 1.5px solid var(--line);
+    border-radius: 12px; padding: 16px; text-align: center;
+  }
+  .ind-item .num { margin: 0 auto 8px; }
+  .ind-item p { font-size: 14px; color: var(--ink-soft); margin: 4px 0 0; line-height: 1.4; }
+
+  .num {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--pink-soft); border: 1.5px solid var(--line);
+    display: grid; place-items: center;
+    font-family: "Jost", sans-serif; font-size: 26px; color: #b04a6a;
+    margin-bottom: 10px;
+  }
+
+  .jh-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 40px; }
+  .step {
+    border: 1.5px dashed var(--line); border-radius: 14px;
+    padding: 20px; background: var(--paper);
+  }
+  .step p { font-size: 15px; color: var(--ink-soft); margin: 4px 0 0; line-height: 1.4; }
+
+  .jh-pay-single {
+    border: 1.5px solid var(--line); border-radius: 14px;
+    padding: 32px 40px; background: var(--lav-soft);
+    display: flex; flex-direction: column; gap: 12px;
+    align-items: center; text-align: center;
+    width: 100%; margin: 0 0 40px; box-sizing: border-box;
+  }
+  .jh-pay-single p { font-size: 16px; color: var(--ink-soft); line-height: 1.5; margin: 0; max-width: 640px; }
+
+  .jh-faq { display: flex; flex-direction: column; gap: 8px; }
+
+  /* ===== TOAST ===== */
+  .toast {
+    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+    background: var(--purple); color: var(--paper);
+    padding: 14px 28px; border-radius: 10px;
+    font-size: 16px; z-index: 9999;
+    opacity: 0; transition: opacity 0.3s;
+    pointer-events: none; white-space: nowrap;
+  }
+  .toast.show { opacity: 1; }
+
+  .related-section { padding: 30px 60px 50px; }
+
+  /* ── Sort dropdown ── */
+  .sort-select {
+    position: relative;
+    border: 1.5px solid var(--line);
+    border-radius: 6px;
+    padding: 6px 14px;
+    background: var(--paper);
+    cursor: pointer;
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: "Jost", sans-serif; font-size: 14px;
+    user-select: none;
+  }
+  .sort-arr { font-size: 12px; color: #8a7aaa; transition: transform 0.2s; flex-shrink: 0; }
+  .sort-arr.open { transform: rotate(180deg); }
+  .sort-dropdown {
+    display: none; position: absolute;
+    top: calc(100% + 4px); right: 0;
+    background: #fff; border: 1.5px solid #d8cce8; border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(111,79,155,.12);
+    z-index: 200; min-width: 210px; overflow: hidden;
+  }
+  .sort-dropdown.open { display: block; }
+  .sort-opt {
+    padding: 10px 16px;
+    font-family: "Jost", sans-serif; font-size: 15px;
+    cursor: pointer; color: var(--ink); transition: background 0.12s;
+    white-space: nowrap;
+  }
+  .sort-opt:hover { background: var(--lav-soft); }
+  .sort-active { color: #6f4f9b; font-weight: 600; }
+
+  /* ============================================================
+     MOBILE  ≤ 680px
+  ============================================================ */
+  @media (max-width: 680px) {
+
+    /* ── Header ── */
+    .jh-top {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+    }
+    .jh-top-left { display: none; }
+    .jh-top-right { gap: 8px; }
+    .burger-btn { display: flex; }
+
+    /* ── Burger button ── */
+    .burger-btn {
+      display: flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px;
+      border: 1.5px solid var(--line);
+      border-radius: 8px;
+      cursor: pointer;
+      background: var(--paper);
+      flex-shrink: 0;
+    }
+
+    /* ── Fullscreen menu ── */
+    .burger-menu {
+      display: none;
+      position: fixed; inset: 0;
+      background: var(--lav-soft);
+      z-index: 400;
+      flex-direction: column;
+    }
+    .burger-menu.open {
+      display: flex;
+      opacity: 1;
+      animation: bmFade 0.22s ease forwards;
+    }
+
+    /* top bar */
+    .burger-menu-top {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 14px;
+      background: var(--lav);
+      border-bottom: 1.5px solid rgba(31,26,36,0.12);
+    }
+    .burger-logo-area img {
+      width: 50px; height: 50px; border-radius: 50%;
+      border: 1.5px solid var(--line);
+      display: block;
+    }
+    .burger-close {
+      width: 36px; height: 36px;
+      border: 1.5px solid rgba(31,26,36,0.3);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      font-size: 20px; line-height: 1;
+      color: var(--ink);
+      background: transparent;
+    }
+
+    /* links area */
+    .burger-links {
+      display: flex; flex-direction: column;
+      justify-content: center;
+      flex: 1;
+      padding: 0 28px;
+      gap: 0;
+    }
+    .burger-links a {
+      display: flex; align-items: center;
+      gap: 16px;
+      padding: 22px 0;
+      font-family: "Jost", sans-serif;
+      font-size: 26px;
+      font-weight: 400;
+      color: var(--ink);
+      cursor: pointer;
+      border-bottom: 1px solid rgba(111,79,155,0.2);
+      transition: color 0.15s, padding-left 0.15s;
+      letter-spacing: -0.01em;
+    }
+    .burger-links a:first-child { border-top: 1px solid rgba(111,79,155,0.2); }
+    .burger-links a:active { color: var(--purple); padding-left: 6px; }
+    .burger-link-num {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--purple);
+      opacity: 0.7;
+      min-width: 24px;
+      letter-spacing: 0;
+    }
+
+    /* bottom */
+    .burger-menu-bottom {
+      padding: 20px 28px 36px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .burger-cart-btn {
+      flex: 1;
+      text-align: center;
+      padding: 11px 20px;
+      border: 1.5px solid var(--line);
+      border-radius: 8px;
+      background: var(--ink);
+      color: var(--paper);
+      font-family: "Jost", sans-serif;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .burger-overlay { display: none; }
+    .jh-logo img { width: 50px; height: 50px; }
+    .jh-logo span { font-size: 12px; }
+
+    /* ── Nav ── */
+    .jh-nav {
+      gap: 0;
+      padding: 0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      justify-content: flex-start;
+      flex-wrap: nowrap;
+    }
+    .jh-nav::-webkit-scrollbar { display: none; }
+    .jh-nav a {
+      padding: 12px 16px;
+      font-size: 15px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* ── Promo bar ── */
+    .jh-promo { font-size: 13px; padding: 8px 16px; }
+
+    /* ── Section padding ── */
+    .jh-section { padding: 28px 16px 20px; }
+    .jh-crumbs { padding: 12px 16px; }
+    .jh-section-title { font-size: 28px; margin-bottom: 14px; }
+    .jh-section:first-of-type .jh-section-title { font-size: 32px; }
+    .jh-section-tools { gap: 8px; }
+
+    /* ── Product grid: 2 columns ── */
+    .prod-grid { grid-template-columns: repeat(2, 1fr); gap: 14px 12px; }
+    .prod-add { font-size: 14px; padding: 7px 8px; width: 100%; }
+    .prod-price, .prod-ttl { font-size: 15px; }
+
+    /* ── Product page ── */
+    .jh-product {
+      grid-template-columns: 1fr;
+      padding: 0 16px 30px;
+      gap: 24px;
+    }
+    .jh-thumbs { grid-template-columns: repeat(4, 1fr); }
+    .jh-thumbs .ph { height: 64px; }
+    .jh-prod-info h1 { font-size: 36px; }
+    .jh-prod-price { font-size: 26px; }
+    .jh-addon-name { font-size: 17px; }
+    .jh-addon-price { font-size: 16px; }
+    .btn-buy { font-size: 18px; padding: 14px 20px; }
+
+    /* ── Cart ── */
+    .jh-cart { padding: 20px 16px 40px; }
+    .jh-cart-grid { grid-template-columns: 1fr; gap: 20px; }
+    .jh-cart-side { position: static; }
+
+    /* Cart row: 2-row grid layout */
+    .cart-row {
+      display: grid;
+      grid-template-columns: 70px 1fr auto;
+      gap: 4px 10px;
+      padding: 12px;
+    }
+    /* Row 1: photo | info | × */
+    .cart-ph   { grid-column: 1; grid-row: 1 / 3; width: 70px; height: 70px; align-self: center; }
+    .cart-info { grid-column: 2; grid-row: 1; align-self: end; min-width: 0; }
+    .cart-x    { grid-column: 3; grid-row: 1; font-size: 22px; align-self: start; }
+    /* Row 2: — | qty (fit) + price (right) in same cell via flex | — */
+    .cart-row-bottom {
+      grid-column: 2 / 4; grid-row: 2;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .cart-row .qty { width: fit-content; flex-shrink: 0; min-width: max-content; }
+    .cart-row-bottom { min-width: 0; }
+    .cart-price { font-size: 17px; }
+    .cart-ttl { font-size: 16px; }
+    .cart-sub  { font-size: 13px; }
+
+    /* Cart summary */
+    .cart-line { font-size: 14px; }
+    .cart-line.big { font-size: 20px; }
+
+    /* ── About page ── */
+    .jh-about-hero {
+      grid-template-columns: 1fr;
+      padding: 24px 16px;
+      gap: 20px;
+    }
+    .big-h { font-size: 40px; }
+    .jh-about-stats {
+      grid-template-columns: repeat(2, 1fr);
+      padding: 0 16px 28px;
+    }
+    .stat b { font-size: 30px; }
+    .jh-about-text { padding: 20px 16px; }
+    .jh-about-cols { grid-template-columns: 1fr; gap: 16px; }
+    .jh-about-gallery { padding: 20px 16px 36px; }
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 120px; }
+
+    /* ── Delivery page ── */
+    .jh-delivery { padding: 24px 16px; }
+    .jh-individual { padding: 20px 16px; }
+    .jh-individual-row { grid-template-columns: 1fr; gap: 12px; }
+    .jh-steps { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+
+    /* ── Footer ── */
+    .jh-footer { padding: 28px 16px 20px; }
+    .jh-footer-grid { grid-template-columns: 1fr 1fr; gap: 20px 16px; }
+    .jh-footer-grid h4 { font-size: 17px; }
+
+    /* ── Toast on mobile ── */
+    .toast { bottom: 20px; font-size: 14px; padding: 11px 20px; max-width: 88vw; white-space: normal; text-align: center; }
+  }
+
+  @keyframes bmFade {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<!-- ========== PAGE: HOME ========== -->
+<!-- Burger menu — global, outside all pages -->
+<div class="burger-overlay" id="burger-overlay"></div>
+<div class="burger-menu" id="burger-menu">
+  <div class="burger-menu-top">
+    <div class="burger-logo-area">
+      <img src="logo.png" alt="Лавандер" />
+    </div>
+    <span class="burger-close" onclick="closeBurger()">×</span>
+  </div>
+  <div class="burger-links">
+    <a onclick="closeBurger(); navigate('page-home')">
+      <span class="burger-link-num">01</span>Каталог
+    </a>
+    <a onclick="closeBurger(); navigate('page-delivery')">
+      <span class="burger-link-num">02</span>Доставка и оплата
+    </a>
+    <a onclick="closeBurger(); navigate('page-about')">
+      <span class="burger-link-num">03</span>О нас
+    </a>
+  </div>
+  <div class="burger-menu-bottom">
+    <span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2 4.2 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.4-1.4a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.7A2 2 0 0 1 22 16.9z"/></svg></span>
+    <span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1" fill="#1f1a24" stroke="none"/></svg></span>
+    <span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2" fill="#1f1a24" stroke="none"/></svg></span>
+    <span class="burger-cart-btn" onclick="closeBurger(); navigate('page-cart')">Корзина</span>
+  </div>
+</div>
+
+<div class="page active" id="page-home">
+  <div class="jh-top">
+    <div class="jh-top-left hand">
+      <a onclick="navigate('page-home')">Каталог</a>
+      <a onclick="navigate('page-delivery')">Доставка и оплата</a>
+      <a onclick="navigate('page-about')">О нас</a>
+    </div>
+    <div class="jh-logo" onclick="navigate('page-home')">
+      <img src="logo.png" alt="Лавандер" />
+    </div>
+    <div class="jh-top-right hand">
+      <span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2 4.2 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.4-1.4a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.7A2 2 0 0 1 22 16.9z"/></svg></span>
+      <span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1" fill="#1f1a24" stroke="none"/></svg></span>
+      <span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2" fill="#1f1a24" stroke="none"/></svg></span>
+      <span class="cart-btn" onclick="navigate('page-cart')">Корзина</span>
+      <span class="burger-btn" onclick="toggleBurger()" aria-label="Меню">
+        <svg width="18" height="14" viewBox="0 0 18 14" fill="none">
+          <line x1="0" y1="1" x2="18" y2="1" stroke="#1f1a24" stroke-width="2" stroke-linecap="round"/>
+          <line x1="0" y1="7" x2="18" y2="7" stroke="#1f1a24" stroke-width="2" stroke-linecap="round"/>
+          <line x1="0" y1="13" x2="18" y2="13" stroke="#1f1a24" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </span>
+    </div>
+  </div>
+
+  <nav class="jh-nav" id="home-nav">
+    <a href="#vitrina" class="active" onclick="scrollToSection('vitrina',this);return false;">актуальная витрина</a>
+    <a href="#sbornye" onclick="scrollToSection('sbornye',this);return false;">сборные букеты</a>
+    <a href="#mono" onclick="scrollToSection('mono',this);return false;">монобукеты</a>
+    <a href="#korobki" onclick="scrollToSection('korobki',this);return false;">композиции в коробках</a>
+    <a href="#korziny" onclick="scrollToSection('korziny',this);return false;">композиции в корзинах</a>
+  </nav>
+  <div class="jh-promo">Бесплатная доставка по Гомелю от 80 рублей</div>
+
+  <section class="jh-section" id="vitrina">
+    <h2 class="jh-section-title">Актуальная витрина</h2>
+    <div class="jh-section-tools">
+      <div class="sort-select" onclick="toggleSort(this)"><span class="sort-label">По умолчанию</span><span class="sort-arr">▾</span><div class="sort-dropdown"><div class="sort-opt sort-active" onclick="setSortOpt(this,event)">По умолчанию</div><div class="sort-opt" onclick="setSortOpt(this,event)">Цена по возрастанию</div><div class="sort-opt" onclick="setSortOpt(this,event)">Цена по убыванию</div></div></div>
+    </div>
+    <div class="prod-grid">
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Розовое утро')">Добавить в корзину</a><div class="prod-price">89 BYN</div><div class="prod-ttl">Розовое утро</div></div>
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Лавандовый сон')">Добавить в корзину</a><div class="prod-price">145 BYN</div><div class="prod-ttl">Лавандовый сон</div></div>
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Полевой шёпот')">Добавить в корзину</a><div class="prod-price">75 BYN</div><div class="prod-ttl">Полевой шёпот</div></div>
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Пионовый вальс')">Добавить в корзину</a><div class="prod-price">145 BYN</div><div class="prod-ttl">Пионовый вальс</div></div>
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Тихий сад')">Добавить в корзину</a><div class="prod-price">99 BYN</div><div class="prod-ttl">Тихий сад</div></div>
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Облачко')">Добавить в корзину</a><div class="prod-price">65 BYN</div><div class="prod-ttl">Облачко</div></div>
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Утреннее солнце')">Добавить в корзину</a><div class="prod-price">120 BYN</div><div class="prod-ttl">Утреннее солнце</div></div>
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Молочные пионы')">Добавить в корзину</a><div class="prod-price">180 BYN</div><div class="prod-ttl">Молочные пионы</div></div>
+    </div>
+    <div class="jh-section-more"><a class="btn-load">Загрузить ещё</a></div>
+  </section>
+
+  <section class="jh-section" id="sbornye">
+    <h2 class="jh-section-title">Сборные букеты</h2>
+    <div class="jh-section-tools"><div class="sort-select" onclick="toggleSort(this)"><span class="sort-label">По умолчанию</span><span class="sort-arr">▾</span><div class="sort-dropdown"><div class="sort-opt sort-active" onclick="setSortOpt(this,event)">По умолчанию</div><div class="sort-opt" onclick="setSortOpt(this,event)">Цена по возрастанию</div><div class="sort-opt" onclick="setSortOpt(this,event)">Цена по убыванию</div></div></div></div>
+    <div class="prod-grid">
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Весенний вечер')">Добавить в корзину</a><div class="prod-price">110 BYN</div><div class="prod-ttl">Весенний вечер</div></div>
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Мягкий розовый')">Добавить в корзину</a><div class="prod-price">95 BYN</div><div class="prod-ttl">Мягкий розовый</div></div>
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Пастельная мечта')">Добавить в корзину</a><div class="prod-price">130 BYN</div><div class="prod-ttl">Пастельная мечта</div></div>
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Белая лирика')">Добавить в корзину</a><div class="prod-price">85 BYN</div><div class="prod-ttl">Белая лирика</div></div>
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Сиреневый туман')">Добавить в корзину</a><div class="prod-price">150 BYN</div><div class="prod-ttl">Сиреневый туман</div></div>
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Нежность')">Добавить в корзину</a><div class="prod-price">75 BYN</div><div class="prod-ttl">Нежность</div></div>
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Садовый романс')">Добавить в корзину</a><div class="prod-price">115 BYN</div><div class="prod-ttl">Садовый романс</div></div>
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Цветочный сон')">Добавить в корзину</a><div class="prod-price">160 BYN</div><div class="prod-ttl">Цветочный сон</div></div>
+    </div>
+    <div class="jh-section-more"><a class="btn-load">Загрузить ещё</a></div>
+  </section>
+
+  <section class="jh-section" id="mono">
+    <h2 class="jh-section-title">Монобукеты</h2>
+    <div class="jh-section-tools"><div class="sort-select" onclick="toggleSort(this)"><span class="sort-label">По умолчанию</span><span class="sort-arr">▾</span><div class="sort-dropdown"><div class="sort-opt sort-active" onclick="setSortOpt(this,event)">По умолчанию</div><div class="sort-opt" onclick="setSortOpt(this,event)">Цена по возрастанию</div><div class="sort-opt" onclick="setSortOpt(this,event)">Цена по убыванию</div></div></div></div>
+    <div class="prod-grid">
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Тюльпаны белые')">Добавить в корзину</a><div class="prod-price">55 BYN</div><div class="prod-ttl">Тюльпаны белые</div></div>
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Розы розовые')">Добавить в корзину</a><div class="prod-price">89 BYN</div><div class="prod-ttl">Розы розовые</div></div>
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Хризантемы кустовые')">Добавить в корзину</a><div class="prod-price">65 BYN</div><div class="prod-ttl">Хризантемы кустовые</div></div>
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Пионы пышные')">Добавить в корзину</a><div class="prod-price">175 BYN</div><div class="prod-ttl">Пионы пышные</div></div>
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Ромашки луговые')">Добавить в корзину</a><div class="prod-price">45 BYN</div><div class="prod-ttl">Ромашки луговые</div></div>
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Сирень нежная')">Добавить в корзину</a><div class="prod-price">70 BYN</div><div class="prod-ttl">Сирень нежная</div></div>
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Орхидеи белые')">Добавить в корзину</a><div class="prod-price">130 BYN</div><div class="prod-ttl">Орхидеи белые</div></div>
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Нарциссы')">Добавить в корзину</a><div class="prod-price">50 BYN</div><div class="prod-ttl">Нарциссы</div></div>
+    </div>
+    <div class="jh-section-more"><a class="btn-load">Загрузить ещё</a></div>
+  </section>
+
+  <section class="jh-section" id="korobki">
+    <h2 class="jh-section-title">Композиции в коробках</h2>
+    <div class="jh-section-tools"><div class="sort-select" onclick="toggleSort(this)"><span class="sort-label">По умолчанию</span><span class="sort-arr">▾</span><div class="sort-dropdown"><div class="sort-opt sort-active" onclick="setSortOpt(this,event)">По умолчанию</div><div class="sort-opt" onclick="setSortOpt(this,event)">Цена по возрастанию</div><div class="sort-opt" onclick="setSortOpt(this,event)">Цена по убыванию</div></div></div></div>
+    <div class="prod-grid">
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Коробочка Весна')">Добавить в корзину</a><div class="prod-price">120 BYN</div><div class="prod-ttl">Коробочка «Весна»</div></div>
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Шляпная роза')">Добавить в корзину</a><div class="prod-price">195 BYN</div><div class="prod-ttl">Шляпная роза</div></div>
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Лавандовый ящик')">Добавить в корзину</a><div class="prod-price">160 BYN</div><div class="prod-ttl">Лавандовый ящик</div></div>
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Нежный флорбокс')">Добавить в корзину</a><div class="prod-price">140 BYN</div><div class="prod-ttl">Нежный флорбокс</div></div>
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Пионы в коробке')">Добавить в корзину</a><div class="prod-price">210 BYN</div><div class="prod-ttl">Пионы в коробке</div></div>
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Розовый бархат')">Добавить в корзину</a><div class="prod-price">175 BYN</div><div class="prod-ttl">Розовый бархат</div></div>
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Сердечко с розами')">Добавить в корзину</a><div class="prod-price">225 BYN</div><div class="prod-ttl">Сердечко с розами</div></div>
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Мини-коробочка')">Добавить в корзину</a><div class="prod-price">85 BYN</div><div class="prod-ttl">Мини-коробочка</div></div>
+    </div>
+    <div class="jh-section-more"><a class="btn-load">Загрузить ещё</a></div>
+  </section>
+
+  <section class="jh-section" id="korziny">
+    <h2 class="jh-section-title">Композиции в корзинах</h2>
+    <div class="jh-section-tools"><div class="sort-select" onclick="toggleSort(this)"><span class="sort-label">По умолчанию</span><span class="sort-arr">▾</span><div class="sort-dropdown"><div class="sort-opt sort-active" onclick="setSortOpt(this,event)">По умолчанию</div><div class="sort-opt" onclick="setSortOpt(this,event)">Цена по возрастанию</div><div class="sort-opt" onclick="setSortOpt(this,event)">Цена по убыванию</div></div></div></div>
+    <div class="prod-grid">
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Плетёная корзина с пионами')">Добавить в корзину</a><div class="prod-price">200 BYN</div><div class="prod-ttl">Плетёная корзина с пионами</div></div>
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Садовая корзинка')">Добавить в корзину</a><div class="prod-price">165 BYN</div><div class="prod-ttl">Садовая корзинка</div></div>
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Лесная сказка')">Добавить в корзину</a><div class="prod-price">145 BYN</div><div class="prod-ttl">Лесная сказка</div></div>
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Корзина невесты')">Добавить в корзину</a><div class="prod-price">250 BYN</div><div class="prod-ttl">Корзина невесты</div></div>
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Прованс')">Добавить в корзину</a><div class="prod-price">185 BYN</div><div class="prod-ttl">Прованс</div></div>
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Полевое лето')">Добавить в корзину</a><div class="prod-price">130 BYN</div><div class="prod-ttl">Полевое лето</div></div>
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Бохо-корзина')">Добавить в корзину</a><div class="prod-price">175 BYN</div><div class="prod-ttl">Бохо-корзина</div></div>
+      <div class="prod"><div class="ph x prod-img" onclick="navigate('page-product')" style="cursor:pointer">фото букета</div><a class="prod-add" onclick="addToCart('Корзина с суккулентами')">Добавить в корзину</a><div class="prod-price">150 BYN</div><div class="prod-ttl">Корзина с суккулентами</div></div>
+    </div>
+    <div class="jh-section-more"><a class="btn-load">Загрузить ещё</a></div>
+  </section>
+
+  <footer class="jh-footer">
+    <div class="jh-footer-grid">
+      <div>
+        <div class="footer-logo"><img src="logo.png" alt="Лавандер" /></div>
+        <div class="hand jh-soc" style="margin-top:14px">
+          <span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2" fill="#1f1a24" stroke="none"/></svg></span><span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1" fill="#1f1a24" stroke="none"/></svg></span><span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 8.5-8.5 8.5 8.5 0 0 1 8.5 8.5z"/></svg></span><span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2 4.2 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.4-1.4a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.7A2 2 0 0 1 22 16.9z"/></svg></span>
+        </div>
+      </div>
+      <div>
+        <h4>наш адрес</h4>
+        <p>г. Гомель, ул. Речицкая, 2<br />(перекрёсток ул. Гагарина и ул. Речицкая,<br />возле ТЦ «Секрет»)</p>
+        <p style="margin-top:10px;color:#4a4452">пн–вс<br />9:00 – 20:00</p>
+      </div>
+      <div>
+        <h4>контакты</h4>
+        <p>+375 (29) 119-06-99</p>
+        <p style="color:#4a4452;font-size:13px">Viber · Telegram</p>
+        <p style="margin-top:6px">@lavander.gomel</p>
+      </div>
+      <div>
+        <h4>меню</h4>
+        <p><a onclick="navigate('page-home')">Каталог</a></p>
+        <p><a onclick="navigate('page-delivery')">Доставка и оплата</a></p>
+        <p><a onclick="navigate('page-about')">О нас</a></p>
+        <p><a onclick="navigate('page-cart')">Корзина</a></p>
+      </div>
+    </div>
+    <hr class="h-line" />
+    <div class="jh-footer-pay">
+      <span class="pay">VISA</span><span class="pay">MasterCard</span><span class="pay">Белкарт</span><span class="pay">Apple Pay</span><span class="pay">Samsung Pay</span>
+    </div>
+    <div class="jh-footer-legal hand">
+      ЧТУП «Лавандер» · 246000, г. Гомель, ул. Речицкая, 2 &nbsp;·&nbsp; Политика конфиденциальности &nbsp;·&nbsp; Публичная оферта
+    </div>
+  </footer>
+</div>
+
+
+<!-- ========== PAGE: PRODUCT ========== -->
+<div class="page" id="page-product">
+  <div class="jh-top">
+    <div class="jh-top-left hand">
+      <a onclick="navigate('page-home')">Каталог</a>
+      <a onclick="navigate('page-delivery')">Доставка и оплата</a>
+      <a onclick="navigate('page-about')">О нас</a>
+    </div>
+    <div class="jh-logo" onclick="navigate('page-home')"><img src="logo.png" alt="Лавандер" /></div>
+    <div class="jh-top-right hand">
+      <span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2 4.2 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.4-1.4a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.7A2 2 0 0 1 22 16.9z"/></svg></span><span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1" fill="#1f1a24" stroke="none"/></svg></span><span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2" fill="#1f1a24" stroke="none"/></svg></span>
+      <span class="cart-btn" onclick="navigate('page-cart')">Корзина</span>
+      <span class="burger-btn" onclick="toggleBurger()" aria-label="Меню">
+        <svg width="18" height="14" viewBox="0 0 18 14" fill="none">
+          <line x1="0" y1="1" x2="18" y2="1" stroke="#1f1a24" stroke-width="2" stroke-linecap="round"/>
+          <line x1="0" y1="7" x2="18" y2="7" stroke="#1f1a24" stroke-width="2" stroke-linecap="round"/>
+          <line x1="0" y1="13" x2="18" y2="13" stroke="#1f1a24" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </span>
+    </div>
+  </div>
+  <nav class="jh-nav">
+    <a onclick="navigate('page-home')">актуальная витрина</a>
+    <a class="active">сборные букеты</a>
+    <a onclick="navigate('page-home')">монобукеты</a>
+    <a onclick="navigate('page-home')">композиции в коробках</a>
+    <a onclick="navigate('page-home')">композиции в корзинах</a>
+  </nav>
+  <div class="jh-promo">Бесплатная доставка по Гомелю от 80 рублей</div>
+
+  <div class="jh-crumbs hand">
+    <a onclick="navigate('page-home')">главная</a> / <a onclick="navigate('page-home')">сборные букеты</a> / «Лавандовый сон»
+  </div>
+
+  <section class="jh-product">
+    <div class="jh-prod-gallery">
+      <div class="ph x main-ph">главное фото букета</div>
+      <div class="jh-thumbs">
+        <div class="ph">мини</div><div class="ph">мини</div><div class="ph">мини</div><div class="ph">мини</div>
+      </div>
+    </div>
+
+    <div class="jh-prod-info">
+      <div class="hand jh-art">артикул 00128</div>
+      <h1>Лавандовый сон</h1>
+      <div class="jh-prod-price" id="product-price-display">145 BYN</div>
+      <p class="jh-prod-desc">Воздушный букет с лавандой, пионовидными розами и эвкалиптом. Собирается утром, привозим в фирменной упаковке с открыткой.</p>
+
+      <div class="jh-prod-row">
+        <span class="hand">количество:</span>
+        <div class="qty">
+          <span onclick="changeQty(-1)"><svg width="14" height="2" viewBox="0 0 14 2" fill="none"><line x1="1" y1="1" x2="13" y2="1" stroke="#1f1a24" stroke-width="2" stroke-linecap="round"/></svg></span>
+          <b id="qty-val">1</b>
+          <span onclick="changeQty(1)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><line x1="7" y1="1" x2="7" y2="13" stroke="#1f1a24" stroke-width="2" stroke-linecap="round"/><line x1="1" y1="7" x2="13" y2="7" stroke="#1f1a24" stroke-width="2" stroke-linecap="round"/></svg></span>
+        </div>
+      </div>
+
+      <div class="jh-addons">
+        <div class="hand" style="font-size:22px;margin-bottom:8px">дополнительно к букету:</div>
+        <label class="jh-addon" id="addon-card" onclick="toggleAddon(this,2,'card-msg-block')">
+          <span class="jh-checkbox"></span>
+          <span class="jh-addon-name">Открытка с пожеланием</span>
+          <span class="jh-addon-price">+ 2 BYN</span>
+        </label>
+        <div class="card-msg-block" id="card-msg-block">
+          <textarea class="input-field card-msg-textarea" placeholder="Текст пожелания на открытке…" rows="3"></textarea>
+        </div>
+        <label class="jh-addon" onclick="toggleAddon(this,10)">
+          <span class="jh-checkbox"></span>
+          <span class="jh-addon-name">Аквабокс <span class="jh-addon-sub">(дольше сохраняет свежесть)</span></span>
+          <span class="jh-addon-price">+ 10 BYN</span>
+        </label>
+        <label class="jh-addon" onclick="toggleAddon(this,15)">
+          <span class="jh-checkbox"></span>
+          <span class="jh-addon-name">Пакет-переноска</span>
+          <span class="jh-addon-price">+ 15 BYN</span>
+        </label>
+      </div>
+
+      <a class="btn-buy" id="btn-buy-product" onclick="addProductToCart()">Добавить в корзину · 145 BYN</a>
+
+      <div class="jh-prod-ship hand">
+        ✿ доставка по Гомелю от 90 минут &nbsp;·&nbsp; фото перед отправкой
+      </div>
+
+      <div class="jh-prod-note">
+        Цветы могут быть заменены на равнозначные в других оттенках или изменен состав, при этом стоимость и общее настроение букета сохранятся.
+      </div>
+
+      <div class="jh-prod-acc">
+        <!-- Состав -->
+        <div>
+          <div class="acc" onclick="toggleAcc(this)"><span>Состав букета</span><span>+</span></div>
+          <div class="acc-body">
+            Лаванда — 7 веток · Пионовидная роза (бледно-розовая) — 3 шт · Эвкалипт — 3 ветки · Хлопок — 2 веточки · Гипсофила — 1 веточка
+          </div>
+        </div>
+        <!-- Уход — раскрыт -->
+        <div>
+          <div class="acc open" onclick="toggleAcc(this)">
+            <span>Уход за цветами</span><span>−</span>
+          </div>
+          <div class="acc-body open">
+            <div class="care-list">
+              <div class="care-item"><span class="care-check">✓</span><span>Перед тем как поставить цветы в вазу, сделайте свежий срез под углом 45° острым секатором или ножом.</span></div>
+              <div class="care-item"><span class="care-check">✓</span><span>Меняйте воду и промывайте вазу каждые 1–2 дня.</span></div>
+              <div class="care-item"><span class="care-check">✓</span><span>Не держите цветы вблизи отопительных приборов, фруктов, на сквозняке или под прямыми лучами солнца.</span></div>
+              <div class="care-item"><span class="care-check">✓</span><span>Убирайте сразу завявшие цветы из букета.</span></div>
+              <div class="care-item"><span class="care-check">✓</span><span>Цветочную композицию в коробке поливайте каждые 2 дня небольшим количеством воды, аккуратно раздвигая стебли, стараясь попасть на флористическую губку.</span></div>
+              <div class="chrysal-block">
+                <div class="chrysal-title">Удобрение «Кризал» — в подарок к букету!</div>
+                <div class="chrysal-text">Добавьте 1 пакетик на 1 литр воды — и цветы простоят значительно дольше. «Кризал» обеспечивает долгую свежесть срезанных цветов, длительное цветение, полноценное распускание бутонов, хорошее питание и оптимальное увлажнение, а также сохранение окраса лепестков и листьев.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Доставка -->
+        <div>
+          <div class="acc" onclick="toggleAcc(this)"><span>Доставка и оплата</span><span>+</span></div>
+          <div class="acc-body">
+            Доставка по Гомелю рассчитывается индивидуально, бесплатно от 80 рублей. Оплата картой онлайн: Visa, Mastercard, Белкарт, Apple Pay, Samsung Pay.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="jh-footer">
+    <div class="jh-footer-grid">
+      <div><div class="footer-logo"><img src="logo.png" alt="Лавандер" /></div><div class="hand jh-soc" style="margin-top:14px"><span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2" fill="#1f1a24" stroke="none"/></svg></span><span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1" fill="#1f1a24" stroke="none"/></svg></span><span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 8.5-8.5 8.5 8.5 0 0 1 8.5 8.5z"/></svg></span><span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2 4.2 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.4-1.4a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.7A2 2 0 0 1 22 16.9z"/></svg></span></div></div>
+      <div><h4>наш адрес</h4><p>г. Гомель, ул. Речицкая, 2<br />(возле ТЦ «Секрет»)</p><p style="margin-top:10px;color:#4a4452">пн–вс<br />9:00 – 20:00</p></div>
+      <div><h4>контакты</h4><p>+375 (29) 119-06-99</p><p style="color:#4a4452;font-size:13px">Viber · Telegram</p><p style="margin-top:6px">@lavander.gomel</p></div>
+      <div><h4>меню</h4><p><a onclick="navigate('page-home')">Каталог</a></p><p><a onclick="navigate('page-delivery')">Доставка и оплата</a></p><p><a onclick="navigate('page-about')">О нас</a></p><p><a onclick="navigate('page-cart')">Корзина</a></p></div>
+    </div>
+    <hr class="h-line" /><div class="jh-footer-pay"><span class="pay">VISA</span><span class="pay">MasterCard</span><span class="pay">Белкарт</span><span class="pay">Apple Pay</span><span class="pay">Samsung Pay</span></div>
+    <div class="jh-footer-legal hand">ЧТУП «Лавандер» · 246000, г. Гомель, ул. Речицкая, 2 &nbsp;·&nbsp; Политика конфиденциальности &nbsp;·&nbsp; Публичная оферта</div>
+  </footer>
+</div>
+
+
+<!-- ========== PAGE: CART ========== -->
+<div class="page" id="page-cart">
+  <div class="jh-top">
+    <div class="jh-top-left hand">
+      <a onclick="navigate('page-home')">Каталог</a>
+      <a onclick="navigate('page-delivery')">Доставка и оплата</a>
+      <a onclick="navigate('page-about')">О нас</a>
+    </div>
+    <div class="jh-logo" onclick="navigate('page-home')"><img src="logo.png" alt="Лавандер" /></div>
+    <div class="jh-top-right hand">
+      <span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2 4.2 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.4-1.4a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.7A2 2 0 0 1 22 16.9z"/></svg></span><span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1" fill="#1f1a24" stroke="none"/></svg></span><span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2" fill="#1f1a24" stroke="none"/></svg></span>
+      <span class="cart-btn" onclick="navigate('page-cart')">Корзина</span>
+      <span class="burger-btn" onclick="toggleBurger()" aria-label="Меню">
+        <svg width="18" height="14" viewBox="0 0 18 14" fill="none">
+          <line x1="0" y1="1" x2="18" y2="1" stroke="#1f1a24" stroke-width="2" stroke-linecap="round"/>
+          <line x1="0" y1="7" x2="18" y2="7" stroke="#1f1a24" stroke-width="2" stroke-linecap="round"/>
+          <line x1="0" y1="13" x2="18" y2="13" stroke="#1f1a24" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </span>
+    </div>
+  </div>
+  <nav class="jh-nav">
+    <a onclick="navigate('page-home')">актуальная витрина</a>
+    <a onclick="navigate('page-home')">сборные букеты</a>
+    <a onclick="navigate('page-home')">монобукеты</a>
+    <a onclick="navigate('page-home')">композиции в коробках</a>
+    <a onclick="navigate('page-home')">композиции в корзинах</a>
+  </nav>
+  <div class="jh-promo">Бесплатная доставка по Гомелю от 80 рублей</div>
+
+  <section class="jh-cart">
+    <h2 class="jh-section-title">Корзина</h2>
+    <div class="jh-cart-grid">
+      <div class="jh-cart-list">
+        <div class="cart-row" data-base="150">
+          <div class="ph x cart-ph" onclick="navigate('page-product')" style="cursor:pointer">фото</div>
+          <div class="cart-info">
+            <div class="cart-ttl" onclick="navigate('page-product')" style="cursor:pointer">Лавандовый сон</div>
+            <div class="hand" style="color:#4a4452">крафт-упаковка · с открыткой</div>
+          </div>
+          <span class="cart-x" onclick="removeCartItem(this)">×</span>
+          <div class="cart-row-bottom">
+            <div class="qty"><span onclick="cartQty(this,-1)"><svg width="14" height="2" viewBox="0 0 14 2" fill="none"><line x1="1" y1="1" x2="13" y2="1" stroke="#1f1a24" stroke-width="2" stroke-linecap="round"/></svg></span><b>1</b><span onclick="cartQty(this,1)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><line x1="7" y1="1" x2="7" y2="13" stroke="#1f1a24" stroke-width="2" stroke-linecap="round"/><line x1="1" y1="7" x2="13" y2="7" stroke="#1f1a24" stroke-width="2" stroke-linecap="round"/></svg></span></div>
+            <div class="cart-price">150 BYN</div>
+          </div>
+        </div>
+        <div class="cart-row" data-base="89">
+          <div class="ph x cart-ph" onclick="navigate('page-product')" style="cursor:pointer">фото</div>
+          <div class="cart-info">
+            <div class="cart-ttl" onclick="navigate('page-product')" style="cursor:pointer">Розовое утро</div>
+            <div class="hand" style="color:#4a4452">розовая упаковка</div>
+          </div>
+          <span class="cart-x" onclick="removeCartItem(this)">×</span>
+          <div class="cart-row-bottom">
+            <div class="qty"><span onclick="cartQty(this,-1)"><svg width="14" height="2" viewBox="0 0 14 2" fill="none"><line x1="1" y1="1" x2="13" y2="1" stroke="#1f1a24" stroke-width="2" stroke-linecap="round"/></svg></span><b>2</b><span onclick="cartQty(this,1)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><line x1="7" y1="1" x2="7" y2="13" stroke="#1f1a24" stroke-width="2" stroke-linecap="round"/><line x1="1" y1="7" x2="13" y2="7" stroke="#1f1a24" stroke-width="2" stroke-linecap="round"/></svg></span></div>
+            <div class="cart-price">178 BYN</div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="jh-cart-side">
+        <h3 class="hand-title">Оформление заказа</h3>
+        <div class="cart-line"><span>Букеты ×2</span><span>328 BYN</span></div>
+        <div class="cart-line"><span>Открытка</span><span>5 BYN</span></div>
+        <div class="cart-line"><span>Доставка</span><span class="hand" style="color:#6f4f9b">рассчитаем индивидуально</span></div>
+        <hr class="h-line" />
+        <div class="cart-line big"><span>Итого</span><span>333 BYN</span></div>
+
+        <div class="cart-form">
+          <div class="hand" style="margin-top:4px">способ получения</div>
+          <div class="jh-pills">
+            <span class="pill solid" id="pill-delivery" onclick="switchDelivery('delivery')">доставка</span>
+            <span class="pill" id="pill-pickup" onclick="switchDelivery('pickup')">самовывоз</span>
+          </div>
+          <div class="pickup-note hand" id="pickup-note" style="color:#4a4452;font-size:14px">
+            самовывоз: г. Гомель, ул. Речицкая, 2, ПН–ВС 9:00–20:00
+          </div>
+
+          <div id="recipient-block">
+            <div class="hand" style="margin-top:10px">кому везём</div>
+            <input class="input-field" type="text" placeholder="Имя получателя" />
+            <input class="input-field" type="tel" placeholder="Телефон получателя" />
+          </div>
+
+          <div id="address-block">
+            <div class="hand" style="margin-top:10px">адрес и время</div>
+            <input class="input-field" type="text" placeholder="Адрес доставки" />
+            <input class="input-field" type="text" value="Сегодня, 18:00 ▾" readonly style="cursor:pointer" />
+          </div>
+          <div id="pickup-block" style="display:none">
+            <div class="hand" style="margin-top:10px">кто заберёт</div>
+            <input class="input-field" type="text" placeholder="Имя" />
+            <div class="hand" style="margin-top:10px">во сколько</div>
+            <div class="time-select-wrap" id="time-select-wrap">
+              <div class="input-field time-select-trigger" id="time-trigger" onclick="toggleTimeDropdown()">
+                <span id="time-label">Сегодня, 18:00</span>
+                <span class="time-arrow" id="time-arrow">▾</span>
+              </div>
+              <div class="time-dropdown" id="time-dropdown">
+                <div onclick="selectTime('Сегодня, 10:00')">Сегодня, 10:00</div>
+                <div onclick="selectTime('Сегодня, 12:00')">Сегодня, 12:00</div>
+                <div onclick="selectTime('Сегодня, 14:00')">Сегодня, 14:00</div>
+                <div onclick="selectTime('Сегодня, 16:00')">Сегодня, 16:00</div>
+                <div onclick="selectTime('Сегодня, 18:00')" class="time-option-active">Сегодня, 18:00</div>
+                <div onclick="selectTime('Сегодня, 20:00')">Сегодня, 20:00</div>
+                <div onclick="selectTime('Завтра, 10:00')">Завтра, 10:00</div>
+                <div onclick="selectTime('Завтра, 12:00')">Завтра, 12:00</div>
+                <div onclick="selectTime('Завтра, 14:00')">Завтра, 14:00</div>
+                <div onclick="selectTime('Завтра, 16:00')">Завтра, 16:00</div>
+                <div onclick="selectTime('Завтра, 18:00')">Завтра, 18:00</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hand" style="margin-top:10px">оплата</div>
+          <div class="pay-only-online">
+            <span class="pill solid">картой онлайн</span>
+            <span class="hand" style="color:#4a4452;font-size:15px">Visa · Mastercard · Белкарт</span>
+          </div>
+
+          <div class="jh-photo-block">
+            <label class="jh-photo-toggle" onclick="togglePhoto()">
+              <span class="jh-checkbox" id="photo-cb"></span>
+              <span class="hand" style="font-size:22px">фото перед отправкой</span>
+            </label>
+            <div class="jh-photo-hint hand">пришлём фото готового букета на ваш номер до отправки курьеру</div>
+            <div class="jh-photo-input" id="photo-input">
+              <div class="jh-photo-input-label hand">ваш номер для фото</div>
+              <input class="input-field" type="tel" placeholder="+375 (__) ___-__-__" />
+            </div>
+          </div>
+        </div>
+
+        <a class="btn-buy" style="margin-top:16px" onclick="placeOrder()">Оформить заказ</a>
+        <p class="hand" style="font-size:14px;color:#4a4452;margin-top:10px;text-align:center">
+          нажимая кнопку, вы соглашаетесь с публичной офертой
+        </p>
+      </aside>
+    </div>
+  </section>
+
+  <footer class="jh-footer">
+    <div class="jh-footer-grid">
+      <div><div class="footer-logo"><img src="logo.png" alt="Лавандер" /></div><div class="hand jh-soc" style="margin-top:14px"><span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2" fill="#1f1a24" stroke="none"/></svg></span><span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1" fill="#1f1a24" stroke="none"/></svg></span><span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 8.5-8.5 8.5 8.5 0 0 1 8.5 8.5z"/></svg></span><span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2 4.2 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.4-1.4a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.7A2 2 0 0 1 22 16.9z"/></svg></span></div></div>
+      <div><h4>наш адрес</h4><p>г. Гомель, ул. Речицкая, 2<br />(возле ТЦ «Секрет»)</p><p style="margin-top:10px;color:#4a4452">пн–вс<br />9:00 – 20:00</p></div>
+      <div><h4>контакты</h4><p>+375 (29) 119-06-99</p><p style="color:#4a4452;font-size:13px">Viber · Telegram</p><p style="margin-top:6px">@lavander.gomel</p></div>
+      <div><h4>меню</h4><p><a onclick="navigate('page-home')">Каталог</a></p><p><a onclick="navigate('page-delivery')">Доставка и оплата</a></p><p><a onclick="navigate('page-about')">О нас</a></p><p><a onclick="navigate('page-cart')">Корзина</a></p></div>
+    </div>
+    <hr class="h-line" /><div class="jh-footer-pay"><span class="pay">VISA</span><span class="pay">MasterCard</span><span class="pay">Белкарт</span><span class="pay">Apple Pay</span><span class="pay">Samsung Pay</span></div>
+    <div class="jh-footer-legal hand">ЧТУП «Лавандер» · 246000, г. Гомель, ул. Речицкая, 2 &nbsp;·&nbsp; Политика конфиденциальности &nbsp;·&nbsp; Публичная оферта</div>
+  </footer>
+</div>
+
+
+<!-- ========== PAGE: ABOUT ========== -->
+<div class="page" id="page-about">
+  <div class="jh-top">
+    <div class="jh-top-left hand">
+      <a onclick="navigate('page-home')">Каталог</a>
+      <a onclick="navigate('page-delivery')">Доставка и оплата</a>
+      <a onclick="navigate('page-about')" style="border-bottom:1.5px solid var(--ink)">О нас</a>
+    </div>
+    <div class="jh-logo" onclick="navigate('page-home')"><img src="logo.png" alt="Лавандер" /></div>
+    <div class="jh-top-right hand">
+      <span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2 4.2 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.4-1.4a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.7A2 2 0 0 1 22 16.9z"/></svg></span><span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1" fill="#1f1a24" stroke="none"/></svg></span><span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2" fill="#1f1a24" stroke="none"/></svg></span>
+      <span class="cart-btn" onclick="navigate('page-cart')">Корзина</span>
+      <span class="burger-btn" onclick="toggleBurger()" aria-label="Меню">
+        <svg width="18" height="14" viewBox="0 0 18 14" fill="none">
+          <line x1="0" y1="1" x2="18" y2="1" stroke="#1f1a24" stroke-width="2" stroke-linecap="round"/>
+          <line x1="0" y1="7" x2="18" y2="7" stroke="#1f1a24" stroke-width="2" stroke-linecap="round"/>
+          <line x1="0" y1="13" x2="18" y2="13" stroke="#1f1a24" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </span>
+    </div>
+  </div>
+  <nav class="jh-nav">
+    <a onclick="navigate('page-home')">актуальная витрина</a>
+    <a onclick="navigate('page-home')">сборные букеты</a>
+    <a onclick="navigate('page-home')">монобукеты</a>
+    <a onclick="navigate('page-home')">композиции в коробках</a>
+    <a onclick="navigate('page-home')">композиции в корзинах</a>
+  </nav>
+  <div class="jh-promo">Бесплатная доставка по Гомелю от 80 рублей</div>
+
+  <section class="jh-about-hero">
+    <div>
+      <div class="hand" style="color:#b04a6a;font-size:22px">о мастерской</div>
+      <h1 class="big-h">Маленькая студия<br />с большой любовью к цветам</h1>
+      <p>«Лавандер» — букетная мастерская в центре Гомеля. С 2018 года мы собираем букеты по одному — без шаблонов и наспех.</p>
+    </div>
+    <div class="ph x about-hero-img">фото мастерской</div>
+  </section>
+
+  <section class="jh-about-stats">
+    <div class="stat"><b>2018</b><span class="hand">с этого года</span></div>
+    <div class="stat"><b>12 000+</b><span class="hand">собранных букетов</span></div>
+    <div class="stat"><b>3</b><span class="hand">флориста в команде</span></div>
+    <div class="stat"><b>90 мин</b><span class="hand">средняя доставка</span></div>
+  </section>
+
+  <section class="jh-about-text">
+    <h2 class="jh-section-title">наши принципы</h2>
+    <div class="jh-about-cols">
+      <div><h3>свежесть</h3><p>Цветы привозим к утру у проверенных поставщиков. Если букет завянет раньше 3 дней — заменим или вернём деньги.</p></div>
+      <div><h3>ручная сборка</h3><p>Каждый букет собирает флорист — без конвейера и шаблонов. Поэтому фото в каталоге может немного отличаться от вашего.</p></div>
+      <div><h3>фото перед отправкой</h3><p>Перед тем как отдать курьеру, мы пришлём вам фото готового букета — чтобы вы видели, что получит адресат.</p></div>
+    </div>
+  </section>
+
+  <section class="jh-about-gallery">
+    <h2 class="jh-section-title">наша мастерская</h2>
+    <div class="gallery-grid">
+      <div class="ph x" style="grid-column:span 2;grid-row:span 2">фото 1</div>
+      <div class="ph x">фото 2</div>
+      <div class="ph x">фото 3</div>
+      <div class="ph x">фото 4</div>
+      <div class="ph x">фото 5</div>
+    </div>
+  </section>
+
+  <footer class="jh-footer">
+    <div class="jh-footer-grid">
+      <div><div class="footer-logo"><img src="logo.png" alt="Лавандер" /></div><div class="hand jh-soc" style="margin-top:14px"><span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2" fill="#1f1a24" stroke="none"/></svg></span><span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1" fill="#1f1a24" stroke="none"/></svg></span><span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 8.5-8.5 8.5 8.5 0 0 1 8.5 8.5z"/></svg></span><span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2 4.2 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.4-1.4a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.7A2 2 0 0 1 22 16.9z"/></svg></span></div></div>
+      <div><h4>наш адрес</h4><p>г. Гомель, ул. Речицкая, 2<br />(возле ТЦ «Секрет»)</p><p style="margin-top:10px;color:#4a4452">пн–вс<br />9:00 – 20:00</p></div>
+      <div><h4>контакты</h4><p>+375 (29) 119-06-99</p><p style="color:#4a4452;font-size:13px">Viber · Telegram</p><p style="margin-top:6px">@lavander.gomel</p></div>
+      <div><h4>меню</h4><p><a onclick="navigate('page-home')">Каталог</a></p><p><a onclick="navigate('page-delivery')">Доставка и оплата</a></p><p><a onclick="navigate('page-about')">О нас</a></p><p><a onclick="navigate('page-cart')">Корзина</a></p></div>
+    </div>
+    <hr class="h-line" /><div class="jh-footer-pay"><span class="pay">VISA</span><span class="pay">MasterCard</span><span class="pay">Белкарт</span><span class="pay">Apple Pay</span><span class="pay">Samsung Pay</span></div>
+    <div class="jh-footer-legal hand">ЧТУП «Лавандер» · 246000, г. Гомель, ул. Речицкая, 2 &nbsp;·&nbsp; Политика конфиденциальности &nbsp;·&nbsp; Публичная оферта</div>
+  </footer>
+</div>
+
+
+<!-- ========== PAGE: DELIVERY ========== -->
+<div class="page" id="page-delivery">
+  <div class="jh-top">
+    <div class="jh-top-left hand">
+      <a onclick="navigate('page-home')">Каталог</a>
+      <a onclick="navigate('page-delivery')" style="border-bottom:1.5px solid var(--ink)">Доставка и оплата</a>
+      <a onclick="navigate('page-about')">О нас</a>
+    </div>
+    <div class="jh-logo" onclick="navigate('page-home')"><img src="logo.png" alt="Лавандер" /></div>
+    <div class="jh-top-right hand">
+      <span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2 4.2 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.4-1.4a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.7A2 2 0 0 1 22 16.9z"/></svg></span><span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1" fill="#1f1a24" stroke="none"/></svg></span><span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2" fill="#1f1a24" stroke="none"/></svg></span>
+      <span class="cart-btn" onclick="navigate('page-cart')">Корзина</span>
+      <span class="burger-btn" onclick="toggleBurger()" aria-label="Меню">
+        <svg width="18" height="14" viewBox="0 0 18 14" fill="none">
+          <line x1="0" y1="1" x2="18" y2="1" stroke="#1f1a24" stroke-width="2" stroke-linecap="round"/>
+          <line x1="0" y1="7" x2="18" y2="7" stroke="#1f1a24" stroke-width="2" stroke-linecap="round"/>
+          <line x1="0" y1="13" x2="18" y2="13" stroke="#1f1a24" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </span>
+    </div>
+  </div>
+  <nav class="jh-nav">
+    <a onclick="navigate('page-home')">актуальная витрина</a>
+    <a onclick="navigate('page-home')">сборные букеты</a>
+    <a onclick="navigate('page-home')">монобукеты</a>
+    <a onclick="navigate('page-home')">композиции в коробках</a>
+    <a onclick="navigate('page-home')">композиции в корзинах</a>
+  </nav>
+  <div class="jh-promo">Бесплатная доставка по Гомелю от 80 рублей</div>
+
+  <section class="jh-delivery">
+    <h1 class="big-h center">Доставка и оплата</h1>
+    <p class="jh-lead center">Возим букеты по Гомелю и пригороду. Бережно, вовремя и с фото перед отправкой.</p>
+
+    <div class="jh-individual">
+      <div class="hand" style="font-size:22px;color:#b04a6a">стоимость доставки</div>
+      <h2 class="big-h center" style="margin-top:4px">Доставка рассчитывается индивидуально</h2>
+      <p class="jh-lead center" style="margin-top:8px;text-align:center">
+        Выберите адрес доставки — стоимость обновится автоматически
+      </p>
+      <div class="jh-individual-row">
+        <div class="ind-item">
+          <div class="num hand">1</div>
+          <div class="hand-title">Выбираете адрес на карте</div>
+          <p>Укажите точку доставки в Гомеле или области</p>
+        </div>
+        <div class="ind-item">
+          <div class="num hand">2</div>
+          <div class="hand-title">Мы рассчитываем доставку</div>
+          <p>Стоимость зависит от расстояния и срока</p>
+        </div>
+        <div class="ind-item">
+          <div class="num hand">3</div>
+          <div class="hand-title">Оплачиваете всё сразу</div>
+          <p>Бесплатно от 80 рублей заказа · от 150 рублей в праздничные дни</p>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="jh-section-title">как это работает</h2>
+    <div class="jh-steps">
+      <div class="step">
+        <div class="num hand">1</div>
+        <div class="hand-title">Выбираете букет</div>
+        <p>и пишете адрес доставки в корзине</p>
+      </div>
+      <div class="step">
+        <div class="num hand">2</div>
+        <div class="hand-title">Мы собираем</div>
+        <p>флорист собирает букет и присылает вам фото</p>
+      </div>
+      <div class="step">
+        <div class="num hand">3</div>
+        <div class="hand-title">Курьер везёт</div>
+        <p>обычно успеваем за 90 минут после оплаты</p>
+      </div>
+      <div class="step">
+        <div class="num hand">4</div>
+        <div class="hand-title">Вручаем</div>
+        <p>лично в руки или оставляем на ресепшене — как договоримся</p>
+      </div>
+    </div>
+
+    <h2 class="jh-section-title">оплата</h2>
+    <div class="jh-pay-single">
+      <div class="hand-title" style="font-size:28px">Карточка онлайн</div>
+      <p>Безопасная оплата по карте Visa, Mastercard или Белкарт через защищённый платёжный шлюз.</p>
+    </div>
+
+    <div class="jh-faq">
+      <h2 class="jh-section-title">частые вопросы</h2>
+      <div>
+        <div class="acc" onclick="toggleAcc(this)"><span>Можно ли заказать на завтра к точному времени?</span><span>+</span></div>
+        <div class="acc-body">Да, при оформлении заказа вы можете выбрать удобную дату и время из доступных слотов. Постараемся доставить в указанное время.</div>
+      </div>
+      <div>
+        <div class="acc" onclick="toggleAcc(this)"><span>Что если получателя нет дома?</span><span>+</span></div>
+        <div class="acc-body">Курьер позвонит заранее. Если никто не откликнется, свяжемся с вами и договоримся о повторной доставке или оставим букет на ресепшене.</div>
+      </div>
+      <div>
+        <div class="acc" onclick="toggleAcc(this)"><span>Можно ли изменить адрес после оплаты?</span><span>+</span></div>
+        <div class="acc-body">Напишите нам в мессенджер как можно скорее — постараемся внести изменения, пока букет ещё не передан курьеру.</div>
+      </div>
+      <div>
+        <div class="acc" onclick="toggleAcc(this)"><span>Делаете ли вы анонимную доставку?</span><span>+</span></div>
+        <div class="acc-body">Да! При оформлении заказа оставьте в комментарии пожелание об анонимности — курьер не назовёт имя отправителя.</div>
+      </div>
+      <div>
+        <div class="acc" onclick="toggleAcc(this)"><span>Что если букет не понравится?</span><span>+</span></div>
+        <div class="acc-body">Напишите нам — разберёмся. Если букет не соответствует описанию или повреждён, заменим или вернём деньги.</div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="jh-footer">
+    <div class="jh-footer-grid">
+      <div><div class="footer-logo"><img src="logo.png" alt="Лавандер" /></div><div class="hand jh-soc" style="margin-top:14px"><span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2" fill="#1f1a24" stroke="none"/></svg></span><span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1" fill="#1f1a24" stroke="none"/></svg></span><span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 8.5-8.5 8.5 8.5 0 0 1 8.5 8.5z"/></svg></span><span class="circle-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1a24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2 4.2 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.4-1.4a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.7A2 2 0 0 1 22 16.9z"/></svg></span></div></div>
+      <div><h4>наш адрес</h4><p>г. Гомель, ул. Речицкая, 2<br />(возле ТЦ «Секрет»)</p><p style="margin-top:10px;color:#4a4452">пн–вс<br />9:00 – 20:00</p></div>
+      <div><h4>контакты</h4><p>+375 (29) 119-06-99</p><p style="color:#4a4452;font-size:13px">Viber · Telegram</p><p style="margin-top:6px">@lavander.gomel</p></div>
+      <div><h4>меню</h4><p><a onclick="navigate('page-home')">Каталог</a></p><p><a onclick="navigate('page-delivery')">Доставка и оплата</a></p><p><a onclick="navigate('page-about')">О нас</a></p><p><a onclick="navigate('page-cart')">Корзина</a></p></div>
+    </div>
+    <hr class="h-line" /><div class="jh-footer-pay"><span class="pay">VISA</span><span class="pay">MasterCard</span><span class="pay">Белкарт</span><span class="pay">Apple Pay</span><span class="pay">Samsung Pay</span></div>
+    <div class="jh-footer-legal hand">ЧТУП «Лавандер» · 246000, г. Гомель, ул. Речицкая, 2 &nbsp;·&nbsp; Политика конфиденциальности &nbsp;·&nbsp; Публичная оферта</div>
+  </footer>
+</div>
+
+
+<script>
+  // ===== NAVIGATION =====
+  function navigate(pageId) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(pageId).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function toggleBurger() {
+    const menu = document.getElementById('burger-menu');
+    const overlay = document.getElementById('burger-overlay');
+    menu.classList.toggle('open');
+    overlay.classList.toggle('open');
+  }
+  function closeBurger() {
+    document.getElementById('burger-menu').classList.remove('open');
+    document.getElementById('burger-overlay').classList.remove('open');
+  }
+
+  function scrollToSection(id, el) {
+    const section = document.getElementById(id);
+    if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.querySelectorAll('#home-nav a').forEach(a => a.classList.remove('active'));
+    if (el) el.classList.add('active');
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!document.getElementById('page-home').classList.contains('active')) return;
+    const ids = ['vitrina','sbornye','mono','korobki','korziny'];
+    let current = ids[0];
+    for (const id of ids) {
+      const el = document.getElementById(id);
+      if (el && el.getBoundingClientRect().top < 150) current = id;
+    }
+    document.querySelectorAll('#home-nav a').forEach(a => {
+      a.classList.remove('active');
+      if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+    });
+  });
+
+  // ===== TOAST =====
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  // ===== PRODUCT PAGE =====
+  let basePrice = 145, addonsTotal = 0, qty = 1;
+
+  function updateProductPrice() {
+    const total = (basePrice + addonsTotal) * qty;
+    document.getElementById('product-price-display').textContent = total + ' BYN';
+    document.getElementById('btn-buy-product').textContent = 'Добавить в корзину · ' + total + ' BYN';
+  }
+
+  function changeQty(delta) {
+    qty = Math.max(1, qty + delta);
+    document.getElementById('qty-val').textContent = qty;
+    updateProductPrice();
+  }
+
+  function toggleAddon(label, price, msgBlockId) {
+    const cb = label.querySelector('.jh-checkbox');
+    const isChecked = cb.classList.contains('checked');
+    if (isChecked) {
+      cb.classList.remove('checked'); addonsTotal -= price;
+    } else {
+      cb.classList.add('checked'); addonsTotal += price;
+    }
+    if (msgBlockId) {
+      const block = document.getElementById(msgBlockId);
+      if (block) block.classList.toggle('visible', !isChecked);
+    }
+    updateProductPrice();
+  }
+
+  function addProductToCart() { showToast('Букет добавлен в корзину!'); }
+
+  // ===== ACCORDIONS =====
+  function toggleAcc(header) {
+    const body = header.nextElementSibling;
+    const isOpen = header.classList.contains('open');
+    const icon = header.querySelector('span:last-child');
+    if (isOpen) {
+      header.classList.remove('open'); if (body) body.classList.remove('open');
+      if (icon) icon.textContent = '+';
+    } else {
+      header.classList.add('open'); if (body) body.classList.add('open');
+      if (icon) icon.textContent = '−';
+    }
+  }
+
+  // ===== CART =====
+  function cartQty(btn, delta) {
+    const row = btn.closest('.cart-row');
+    const b = row.querySelector('b');
+    let v = parseInt(b.textContent) + delta;
+    if (v < 1) v = 1;
+    b.textContent = v;
+    const base = parseInt(row.dataset.base);
+    row.querySelector('.cart-price').textContent = (base * v) + ' BYN';
+    recalcCart();
+  }
+
+  function recalcCart() {
+    let subtotal = 0, totalQty = 0;
+    document.querySelectorAll('#page-cart .cart-row').forEach(row => {
+      const qty = parseInt(row.querySelector('b').textContent);
+      const base = parseInt(row.dataset.base);
+      subtotal += qty * base;
+      totalQty += qty;
+    });
+    const extras = 5; // открытка
+    const lines = document.querySelectorAll('#page-cart .cart-line');
+    if (lines[0]) {
+      lines[0].querySelector('span:first-child').textContent = 'Букеты ×' + totalQty;
+      lines[0].querySelector('span:last-child').textContent = subtotal + ' BYN';
+    }
+    const bigLine = document.querySelector('#page-cart .cart-line.big span:last-child');
+    if (bigLine) bigLine.textContent = (subtotal + extras) + ' BYN';
+  }
+
+  function removeCartItem(x) {
+    const row = x.closest('.cart-row');
+    row.style.opacity = '0'; row.style.transition = 'opacity 0.3s';
+    setTimeout(() => { row.remove(); recalcCart(); }, 300);
+    showToast('Товар удалён из корзины');
+  }
+
+  function switchDelivery(type) {
+    const pillD = document.getElementById('pill-delivery');
+    const pillP = document.getElementById('pill-pickup');
+    const note = document.getElementById('pickup-note');
+    const addr = document.getElementById('address-block');
+    const pickup = document.getElementById('pickup-block');
+    const recipient = document.getElementById('recipient-block');
+    if (type === 'delivery') {
+      pillD.classList.add('solid'); pillP.classList.remove('solid');
+      note.classList.remove('visible');
+      addr.style.display = ''; pickup.style.display = 'none';
+      recipient.style.display = '';
+    } else {
+      pillP.classList.add('solid'); pillD.classList.remove('solid');
+      note.classList.add('visible');
+      addr.style.display = 'none'; pickup.style.display = '';
+      recipient.style.display = 'none';
+    }
+  }
+
+  function toggleTimeDropdown() {
+    const dd = document.getElementById('time-dropdown');
+    const arrow = document.getElementById('time-arrow');
+    const isOpen = dd.classList.contains('open');
+    dd.classList.toggle('open', !isOpen);
+    arrow.classList.toggle('open', !isOpen);
+    if (!isOpen) {
+      setTimeout(() => document.addEventListener('click', closeTimeDropdown, { once: true }), 0);
+    }
+  }
+  function closeTimeDropdown(e) {
+    const wrap = document.getElementById('time-select-wrap');
+    if (wrap && !wrap.contains(e.target)) {
+      document.getElementById('time-dropdown').classList.remove('open');
+      document.getElementById('time-arrow').classList.remove('open');
+    }
+  }
+  function selectTime(val) {
+    document.getElementById('time-label').textContent = val;
+    document.getElementById('time-dropdown').classList.remove('open');
+    document.getElementById('time-arrow').classList.remove('open');
+    document.querySelectorAll('.time-dropdown div').forEach(d => d.classList.remove('time-option-active'));
+    event.currentTarget.classList.add('time-option-active');
+  }
+
+  function togglePhoto() {
+    const cb = document.getElementById('photo-cb');
+    const input = document.getElementById('photo-input');
+    if (cb.classList.contains('checked')) {
+      cb.classList.remove('checked'); input.classList.remove('visible');
+    } else {
+      cb.classList.add('checked'); input.classList.add('visible');
+    }
+  }
+
+  function placeOrder() { showToast('Заказ оформлен! Ждите звонка флориста.'); }
+
+  function toggleSort(el) {
+    const dd = el.querySelector('.sort-dropdown');
+    const arr = el.querySelector('.sort-arr');
+    const isOpen = dd.classList.contains('open');
+    // close all
+    document.querySelectorAll('.sort-dropdown.open').forEach(d => {
+      d.classList.remove('open');
+      d.closest('.sort-select').querySelector('.sort-arr').classList.remove('open');
+    });
+    if (!isOpen) {
+      dd.classList.add('open'); arr.classList.add('open');
+      setTimeout(() => document.addEventListener('click', function _c(e) {
+        if (!el.contains(e.target)) { dd.classList.remove('open'); arr.classList.remove('open'); }
+        document.removeEventListener('click', _c);
+      }), 0);
+    }
+  }
+  function setSortOpt(el, e) {
+    e.stopPropagation();
+    const select = el.closest('.sort-select');
+    select.querySelector('.sort-label').textContent = el.textContent;
+    select.querySelectorAll('.sort-opt').forEach(d => d.classList.remove('sort-active'));
+    el.classList.add('sort-active');
+    select.querySelector('.sort-dropdown').classList.remove('open');
+    select.querySelector('.sort-arr').classList.remove('open');
+  }
+
+  function addToCart(name) { showToast('«' + name + '» добавлен в корзину'); }
+</script>
+</body>
+</html>
