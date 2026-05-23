@@ -36,6 +36,25 @@ export async function createPaymentToken(
 
   const auth = Buffer.from(`${shopId}:${secret}`).toString('base64')
 
+  const requestBody = JSON.stringify({
+    checkout: {
+      ...(process.env.NODE_ENV !== 'production' && { test: true }),
+      transaction_type: 'payment',
+      order: {
+        amount:      order.totalPrice,
+        currency:    'BYN',
+        description: `Заказ #${order.publicNumber}`,
+        tracking_id: order.id,
+      },
+      settings: {
+        success_url:      `${appUrl}/checkout/success?order=${order.publicNumber}`,
+        fail_url:         `${appUrl}/checkout/fail?order=${order.publicNumber}`,
+        notification_url: `${appUrl}/api/payments/bepaid/webhook`,
+      },
+    },
+  })
+  console.log('[bepaid] request:', requestBody)
+
   const res = await fetch(CHECKOUT_API, {
     method: 'POST',
     headers: {
@@ -44,23 +63,7 @@ export async function createPaymentToken(
       'X-API-Version': '2',
       'Authorization': `Basic ${auth}`,
     },
-    body: JSON.stringify({
-      checkout: {
-        ...(process.env.NODE_ENV !== 'production' && { test: true }),
-        transaction_type: 'payment',
-        order: {
-          amount:      order.totalPrice,
-          currency:    'BYN',
-          description: `Заказ #${order.publicNumber}`,
-          tracking_id: order.id,
-        },
-        settings: {
-          success_url:      `${appUrl}/checkout/success?order=${order.publicNumber}`,
-          fail_url:         `${appUrl}/checkout/fail?order=${order.publicNumber}`,
-          notification_url: `${appUrl}/api/payments/bepaid/webhook`,
-        },
-      },
-    }),
+    body: requestBody,
   })
 
   if (!res.ok) {
