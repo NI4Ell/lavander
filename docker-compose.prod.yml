@@ -3,7 +3,7 @@ services:
     build: .
     restart: unless-stopped
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=production
     env_file: /etc/lavander/.env
     expose:
       - "3000"
