@@ -38,7 +38,7 @@ export async function createPaymentToken(
 
   const requestBody = JSON.stringify({
     checkout: {
-      ...(process.env.NODE_ENV !== 'production' && { test: true }),
+      ...(process.env.BEPAID_TEST_MODE === 'true' && { test: true }),
       transaction_type: 'payment',
       order: {
         amount:      order.totalPrice,
