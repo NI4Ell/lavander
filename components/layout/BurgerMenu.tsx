@@ -26,6 +26,12 @@ const IconTg = () => (
   </svg>
 )
 
+const SOCIAL = [
+  { href: 'tel:+375291190699',                         src: '/icons/phone.png',     alt: 'Телефон',   target: undefined },
+  { href: 'https://www.instagram.com/lavander.gomel/', src: '/icons/instagram.png', alt: 'Instagram', target: '_blank' },
+  { href: 'https://t.me/+375291190699',                src: '/icons/telegram.png',  alt: 'Telegram',  target: '_blank' },
+]
+
 const NAV_LINKS = [
   { num: '01', label: 'Каталог', href: '/' },
   { num: '02', label: 'Доставка и оплата', href: '/delivery' },
@@ -97,18 +103,18 @@ export default function BurgerMenu({ isOpen, onClose }: BurgerMenuProps) {
 
       {/* Bottom bar */}
       <div className="flex items-center gap-3 px-7 pb-9 pt-5">
-        <a href={`tel:${process.env.NEXT_PUBLIC_SHOP_PHONE ?? '+375296634023'}`}
-           className="w-8 h-8 rounded-full border-[1.5px] border-ink bg-paper grid place-items-center">
-          <IconPhone />
-        </a>
-        <a href="https://instagram.com" target="_blank" rel="noreferrer"
-           className="w-8 h-8 rounded-full border-[1.5px] border-ink bg-paper grid place-items-center">
-          <IconInsta />
-        </a>
-        <a href="https://t.me" target="_blank" rel="noreferrer"
-           className="w-8 h-8 rounded-full border-[1.5px] border-ink bg-paper grid place-items-center">
-          <IconTg />
-        </a>
+        {SOCIAL.map(({ href, src, alt, target }) => (
+          <a
+            key={alt}
+            href={href}
+            target={target}
+            rel={target ? 'noreferrer' : undefined}
+            aria-label={alt}
+            className="w-8 h-8 rounded-full border-[1.5px] border-ink bg-paper grid place-items-center"
+          >
+            <Image src={src} alt={alt} width={20} height={20} />
+          </a>
+        ))}
         <Link
           href="/cart"
           onClick={onClose}
