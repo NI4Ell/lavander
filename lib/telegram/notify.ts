@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/db'
-import { bot } from './bot'
+import { getBot } from './bot'
 import { formatOrderMessage } from './format'
 import { buildKeyboard } from './keyboard'
 
@@ -25,7 +25,7 @@ export async function notifyNewOrder(orderId: string): Promise<void> {
   }
 
   const text = formatOrderMessage(order)
-  const message = await bot.api.sendMessage(chatId, text, {
+  const message = await getBot().api.sendMessage(chatId, text, {
     reply_markup: buildKeyboard(order.status, order.id),
   })
 

@@ -152,15 +152,17 @@ function createBot(): Bot<AdminContext> {
   return bot
 }
 
-// ── Singleton ─────────────────────────────────────────────
-// В dev Next.js hot-reloads модули → без singleton каждый webhook-запрос
-// создаёт новый Bot и регистрирует хендлеры заново → дубли.
-const globalForBot = globalThis as unknown as { bot: Bot<AdminContext> | undefined }
+// ── Ленивый синглтон ──────────────────────────────────────
+// Инициализация откладывается до первого реального запроса —
+// токен недоступен во время `next build`, поэтому нельзя создавать
+// Bot на уровне модуля. globalForBot предотвращает дубли при hot-reload в dev.
+const globalForBot = globalThis as unknown as { _bot: Bot<AdminContext> | undefined }
 
-export const bot: Bot<AdminContext> = globalForBot.bot ?? createBot()
-
-if (process.env.NODE_ENV !== 'production') {
-  globalForBot.bot = bot
+export function getBot(): Bot<AdminContext> {
+  if (!globalForBot._bot) {
+    globalForBot._bot = createBot()
+  }
+  return globalForBot._bot
 }
 
 export type { AdminContext } from './types'
