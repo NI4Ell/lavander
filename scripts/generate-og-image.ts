@@ -2,7 +2,7 @@ import sharp from 'sharp'
 import path from 'path'
 
 async function generateOgImage() {
-  const logoPath = path.join(process.cwd(), 'public/logo.png')
+  const logoPath = path.join(process.cwd(), 'public/logo-removebg-preview.png')
   const outputPath = path.join(process.cwd(), 'public/og-image.jpg')
 
   const width = 1200
