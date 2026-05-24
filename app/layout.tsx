@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'ru_BY',
     siteName: 'Лавандер',
-    images: [{ url: '/og-image.jpg', width: 1200, height: 630 }],
+    images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'Лавандер — букетная мастерская' }],
   },
 }
 
