@@ -3,13 +3,13 @@ import Accordion from '@/components/product/Accordion'
 
 export const metadata: Metadata = {
   title: 'Доставка и оплата',
-  description: 'Доставка букетов по Гомелю. 10 BYN, бесплатно от 80 BYN. В праздники — 15 BYN, бесплатно от 150 BYN. Оплата картой онлайн.',
+  description: 'Доставка букетов по Гомелю. 10 BYN, бесплатно от 100 BYN. В праздники — 15 BYN. Оплата картой онлайн.',
 }
 
 const STEPS = [
   { num: '1', title: 'Выбираете букет',  text: 'и пишете адрес доставки в корзине' },
   { num: '2', title: 'Мы собираем',      text: 'флорист собирает букет и присылает вам фото' },
-  { num: '3', title: 'Курьер везёт',     text: 'обычно успеваем за 90 минут после оплаты' },
+  { num: '3', title: 'Курьер везёт',     text: 'обычно успеваем за 180 минут после оплаты' },
   { num: '4', title: 'Вручаем',          text: 'лично в руки или оставляем на ресепшене — как договоримся' },
 ]
 
@@ -70,14 +70,14 @@ export default function DeliveryPage() {
           <div className="bg-paper border-[1.5px] border-ink rounded-[14px] p-5 text-center">
             <p className="text-[18px] text-ink-soft font-normal m-0 mb-1">Обычные дни</p>
             <p className="text-[48px] leading-none font-bold text-purple m-0">10 BYN</p>
-            <p className="text-[15px] text-ink-soft mt-2 mb-0">бесплатно от <strong>80 BYN</strong></p>
+            <p className="text-[15px] text-ink-soft mt-2 mb-0">бесплатно от <strong>100 BYN</strong></p>
           </div>
 
           {/* Праздничный день */}
           <div className="bg-pink-soft border-[1.5px] border-ink rounded-[14px] p-5 text-center">
             <p className="text-[18px] text-ink-soft font-normal m-0 mb-1">Праздничные дни</p>
             <p className="text-[48px] leading-none font-bold text-purple m-0">15 BYN</p>
-            <p className="text-[15px] text-ink-soft mt-2 mb-0">бесплатно от <strong>150 BYN</strong></p>
+            <p className="text-[15px] text-ink-soft mt-2 mb-0">фиксированная цена</p>
           </div>
         </div>
 
@@ -106,7 +106,7 @@ export default function DeliveryPage() {
         оплата
       </h2>
       <div className="border-[1.5px] border-ink rounded-[14px] px-[40px] py-8 bg-lav-soft flex flex-col gap-3 items-center text-center w-full mb-10 max-md:px-5 max-md:py-6">
-        <p className="text-[28px] text-purple font-normal m-0">Карточка онлайн</p>
+        <p className="text-[28px] text-purple font-normal m-0">Карта онлайн</p>
         <p className="text-[16px] text-ink-soft leading-[1.5] m-0 max-w-[640px]">
           Безопасная оплата по карте Visa, Mastercard или Белкарт через защищённый платёжный шлюз.
         </p>

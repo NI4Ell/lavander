@@ -32,18 +32,23 @@ function labelForSlot(slotUtc: Date, nowUtc: Date): string {
   return `${formatInTimeZone(slotUtc, TZ, 'd MMMM', { locale: ru })}, ${time}`
 }
 
-export async function GET(): Promise<NextResponse<{ slots: SlotPayload[] }>> {
-  const now = new Date()
-  const todayUtcMidnight = new Date(`${formatInTimeZone(now, TZ, 'yyyy-MM-dd')}T00:00:00.000Z`)
-  const exceptions = await prisma.scheduleException.findMany({
-    where: { date: { gte: todayUtcMidnight } },
-  })
-  const slots = generateSlots(now, 30, exceptions)
+export async function GET(): Promise<NextResponse> {
+  try {
+    const now = new Date()
+    const todayUtcMidnight = new Date(`${formatInTimeZone(now, TZ, 'yyyy-MM-dd')}T00:00:00.000Z`)
+    const exceptions = await prisma.scheduleException.findMany({
+      where: { date: { gte: todayUtcMidnight } },
+    })
+    const slots = generateSlots(now, 30, exceptions)
 
-  const payload: SlotPayload[] = slots.map((s) => ({
-    iso: s.toISOString(),
-    label: labelForSlot(s, now),
-  }))
+    const payload: SlotPayload[] = slots.map((s) => ({
+      iso: s.toISOString(),
+      label: labelForSlot(s, now),
+    }))
 
-  return NextResponse.json({ slots: payload })
+    return NextResponse.json({ slots: payload })
+  } catch (err) {
+    console.error('[slots] GET error:', err)
+    return NextResponse.json({ slots: [] }, { status: 500 })
+  }
 }

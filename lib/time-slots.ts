@@ -79,11 +79,11 @@ function ceilToStep(date: Date, step: number): Date {
  * Генерирует список доступных временных слотов в UTC.
  *
  * Алгоритм (Europe/Minsk, 9:00–20:00, лид-тайм 3 часа, шаг 30 минут):
- * - Лид-тайм применяется ВСЕГДА:
- *   - Для дня 0 (сегодня): earliest = now + 3ч.
- *   - Для остальных дней: earliest = (09:00 открытие) + 3ч = 12:00.
- * - Если earliest > 20:00 этого дня — день пропускается.
- * - earliest округляется ВВЕРХ до ближайших 30 минут (но не раньше 09:00).
+ * - d === 0 (сегодня):      earliest = now + 3ч.
+ * - d === 1 (завтра):       earliest = 12:00 (09:00 + лид-тайм 3ч).
+ * - d >= 2 (послезавтра+):  earliest = 09:00 (без лид-тайма, с самого открытия).
+ * - Если earliest > закрытие этого дня — день пропускается.
+ * - earliest округляется ВВЕРХ до ближайших 30 минут (но не раньше открытия).
  * - Слоты генерируются с шагом 30 минут до 20:00 ВКЛЮЧИТЕЛЬНО.
  *
  * Edge cases:
@@ -91,6 +91,7 @@ function ceilToStep(date: Date, step: number): Date {
  *  generateSlots(17:00 Minsk) → первый слот 20:00 сегодня
  *  generateSlots(17:31 Minsk) → сегодня нет слотов, первый = завтра 12:00
  *  generateSlots(23:00 Minsk) → первый слот = завтра 12:00
+ *  generateSlots(любое, d=2)  → первый слот = послезавтра 09:00
  */
 export function generateSlots(
   nowUtc: Date,
@@ -130,11 +131,15 @@ export function generateSlots(
     const dayOpen  = atTimeMinsk(dayMinsk, openH, openM)
     const dayClose = atTimeMinsk(dayMinsk, closeH, closeM)
 
-    // Самое раннее возможное время для этого дня (в Минске).
-    // Лид-тайм применяется и к будущим дням — от момента открытия магазина.
+    // Самое раннее возможное время для этого дня (в Минске):
+    // - сегодня: now + лид-тайм;
+    // - завтра: 12:00 (09:00 + лид-тайм 3ч, покупатель успевает подготовиться);
+    // - послезавтра и далее: 09:00 (без лид-тайма, магазин открывается с начала).
     const earliest = d === 0
       ? addHours(nowMinsk, LEAD_H)
-      : addHours(dayOpen, LEAD_H)
+      : d === 1
+        ? setHours(setMinutes(dayMinsk, 0), OPEN_H + LEAD_H)  // 12:00
+        : setHours(setMinutes(dayMinsk, 0), OPEN_H)            // 09:00
 
     // Если earliest строго после закрытия — пропускаем день
     if (isAfter(earliest, dayClose)) continue

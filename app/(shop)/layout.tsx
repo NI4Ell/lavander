@@ -11,7 +11,7 @@ export default function ShopLayout({ children }: { children: React.ReactNode }) 
 
       {/* 2. Промо-строка — между Header и Nav, по дизайну index.html */}
       <div className="bg-lav-soft text-ink text-center border-b-[1.5px] border-ink px-4 py-3 text-[13px] md:text-[20px]">
-        Бесплатная доставка по Гомелю от 80 рублей
+        Бесплатная доставка по Гомелю от 100 рублей
       </div>
 
       {/* 3. Навигация по категориям.

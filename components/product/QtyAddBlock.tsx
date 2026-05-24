@@ -48,11 +48,10 @@ export default function QtyAddBlock({ product }: Props) {
   const [hasBag,       setHasBag]       = useState(false)
 
   // Сумма аддонов на единицу букета
-  const postcardActive = hasPostcard && postcardText.trim().length > 0
   const addonsPrice =
-    (postcardActive ? ADDON_PRICES.POSTCARD : 0) +
-    (hasAquabox     ? ADDON_PRICES.AQUABOX  : 0) +
-    (hasBag         ? ADDON_PRICES.BAG      : 0)
+    (hasPostcard ? ADDON_PRICES.POSTCARD : 0) +
+    (hasAquabox  ? ADDON_PRICES.AQUABOX  : 0) +
+    (hasBag      ? ADDON_PRICES.BAG      : 0)
 
   // Итоговая цена в кнопке
   const lineTotal = (product.price + addonsPrice) * qty
@@ -65,8 +64,8 @@ export default function QtyAddBlock({ product }: Props) {
         name:         product.name,
         photoUrl:     product.photoUrl,
         price:        product.price,
-        hasPostcard:  postcardActive,
-        postcardText: postcardActive ? postcardText.trim() : undefined,
+        hasPostcard,
+        postcardText: hasPostcard && postcardText.trim().length > 0 ? postcardText.trim() : undefined,
         hasAquabox,
         hasBag,
         addonsPrice,
@@ -95,7 +94,7 @@ export default function QtyAddBlock({ product }: Props) {
             <TextareaField
               value={postcardText}
               onChange={(e) => setPostcardText(e.target.value)}
-              placeholder="Текст пожелания…"
+              placeholder="Текст открытки (необязательно)"
               rows={3}
             />
           )}

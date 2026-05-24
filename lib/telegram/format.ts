@@ -64,8 +64,12 @@ export function formatOrderMessage(order: OrderWithItems, events: EventWithActor
   for (const item of order.items) {
     lines.push(`• ${item.productName} — ${item.quantity} шт × ${formatPrice(item.pricePaid)}`)
 
-    if (item.hasPostcard && item.postcardText) {
-      lines.push(`  с открыткой: «${item.postcardText}»`)
+    if (item.hasPostcard) {
+      if (item.postcardText) {
+        lines.push(`  с открыткой: «${item.postcardText}»`)
+      } else {
+        lines.push('  с открыткой: без текста')
+      }
     }
     if (item.hasAquabox) lines.push('  + аквабокс')
     if (item.hasBag)     lines.push('  + пакет-переноска')

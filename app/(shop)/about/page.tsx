@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 
 export const metadata: Metadata = {
   title: 'О нас',
@@ -35,12 +36,12 @@ const STATS = [
 
 const PRINCIPLES = [
   {
-    title: 'свежесть',
-    text:  'Цветы привозим к утру у проверенных поставщиков. Если букет завянет раньше 3 дней — заменим или вернём деньги.',
+    title: 'только свежие цветы',
+    text:  'Цветы покупаем у проверенных поставщиков — только свежие, только качественные.',
   },
   {
-    title: 'ручная сборка',
-    text:  'Каждый букет собирает флорист — без конвейера и шаблонов. Поэтому фото в каталоге может немного отличаться от вашего.',
+    title: 'с любовью и настроением',
+    text:  'Каждый букет собирает флорист с душой. Внешний вид может незначительно отличаться от фото в каталоге при сохранении состава и стоимости.',
   },
   {
     title: 'фото перед отправкой',
@@ -56,10 +57,10 @@ export default function AboutPage() {
         <div>
           <p className="text-[22px]" style={{ color: '#b04a6a' }}>о мастерской</p>
           <h1 className="text-[64px] leading-none font-bold text-purple my-2 max-md:text-[40px]">
-            Маленькая студия<br />с большой любовью к цветам
+            Лавандер — букетная мастерская с душой!
           </h1>
           <p className="text-[18px] leading-[1.5] max-w-[520px] text-ink-soft mt-0 mb-[14px]">
-            Лавандер — букетная мастерская с душой! Это профессиональные флористы, понимающие менеджеры и быстрые курьеры. Лавандер — это не просто про цветы, это про чувства, настроение и эмоции.
+            Это профессиональные флористы, понимающие менеджеры и быстрые курьеры. Лавандер — это не просто про цветы, это про чувства, настроение и эмоции.
           </p>
           <p className="text-[18px] leading-[1.5] max-w-[520px] text-ink-soft my-0 mb-[14px]">
             Мы уверены, что идеальный букет начинается с индивидуального подхода к каждому покупателю, поэтому мы слушаем Ваши пожелания, подбираем нужные сорта цветов, креативно упаковываем и всегда показываем готовый вариант до отправки.
@@ -68,21 +69,16 @@ export default function AboutPage() {
             Наши флористы — это про открытость, душевность и клиентоориентированность. Мы рады быть частичкой Вашего праздника и всегда хотим видеть радость в Ваших глазах.
           </p>
         </div>
-        <PH className="rounded-[18px] aspect-[4/3]">фото мастерской</PH>
+        <div className="relative self-stretch rounded-[18px] overflow-hidden">
+          <Image
+            src="/about/hero.jpg"
+            alt="Мастерская Лавандер"
+            fill
+            className="object-cover ![h-full] rounded-[18px]"
+          />
+        </div>
       </section>
 
-      {/* ─────────── STATS ────────────────────── */}
-      <section className="grid grid-cols-4 gap-4 px-[60px] pb-10 max-md:grid-cols-2 max-md:px-4 max-md:pb-7">
-        {STATS.map(({ value, label }) => (
-          <div
-            key={value}
-            className="border-[1.5px] border-ink rounded-[14px] p-[18px] bg-lav-soft text-center"
-          >
-            <b className="block text-[42px] font-bold text-purple max-md:text-[30px]">{value}</b>
-            <span className="text-[16px] text-ink-soft">{label}</span>
-          </div>
-        ))}
-      </section>
 
       {/* ─────────── OFFER ────────────────────── */}
       <section className="px-[60px] pb-[30px] max-md:px-4 max-md:pb-6">
@@ -138,14 +134,25 @@ export default function AboutPage() {
           Slot 1 spans 2 cols + 2 rows; remaining 4 slots are 1×1
         */}
         <div
-          className="grid grid-cols-4 gap-3 max-md:grid-cols-2 max-md:gap-2"
-          style={{ gridAutoRows: '160px' }}
+          className="grid grid-cols-4 gap-3 items-stretch max-md:grid-cols-2 max-md:gap-2"
         >
-          <PH className="rounded-[4px] col-span-2 row-span-2">фото 1</PH>
-          <PH className="rounded-[4px]">фото 2</PH>
-          <PH className="rounded-[4px]">фото 3</PH>
-          <PH className="rounded-[4px]">фото 4</PH>
-          <PH className="rounded-[4px]">фото 5</PH>
+          <div className="relative rounded-[4px] col-span-2 overflow-hidden h-[420px]">
+            <Image src="/about/gallery-1.jpg" alt="Лавандер фото 1" fill className="object-cover ![h-full]" />
+          </div>
+          <div className="col-span-2 grid grid-cols-2 gap-3 h-[420px]">
+            <div className="relative overflow-hidden rounded-[4px]">
+              <Image src="/about/gallery-2.jpg" alt="Лавандер фото 2" fill className="object-cover ![h-full]" />
+            </div>
+            <div className="relative overflow-hidden rounded-[4px]">
+              <Image src="/about/gallery-3.jpg" alt="Лавандер фото 3" fill className="object-cover ![h-full]" />
+            </div>
+            <div className="relative overflow-hidden rounded-[4px]">
+              <Image src="/about/gallery-4.jpg" alt="Лавандер фото 4" fill className="object-cover ![h-full]" />
+            </div>
+            <div className="relative overflow-hidden rounded-[4px]">
+              <Image src="/about/gallery-5.jpg" alt="Лавандер фото 5" fill className="object-cover ![h-full]" />
+            </div>
+          </div>
         </div>
       </section>
     </>

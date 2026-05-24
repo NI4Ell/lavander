@@ -387,8 +387,11 @@ export async function POST(req: Request) {
 ## Алгоритм временных слотов
 
 Магазин: 9:00–20:00, Минск UTC+3, лид-тайм 3 часа, слоты по 30 минут.
-Для будущих дней (d > 0) earliest = 09:00, но с учётом лид-тайма первый реальный слот
-обычно начинается с 12:00 (09:00 + 3ч). Сегодня — от текущего времени + 3ч.
+
+Логика `earliest` по дням:
+- `d === 0` (сегодня): `now + 3ч`
+- `d === 1` (завтра): `12:00` (09:00 открытие + лид-тайм 3ч)
+- `d >= 2` (послезавтра+): `09:00` (без лид-тайма, с самого открытия)
 
 ```typescript
 // lib/time-slots.ts
@@ -411,7 +414,9 @@ export function generateSlots(nowUtc: Date, daysAhead = 7): Date[] {
     // Самое раннее возможное время для этого дня
     const earliest = d === 0
       ? addHours(nowMinsk, LEAD_H)
-      : setHours(setMinutes(dayMinsk, 0), OPEN_H)
+      : d === 1
+        ? setHours(setMinutes(dayMinsk, 0), OPEN_H + LEAD_H)  // 12:00
+        : setHours(setMinutes(dayMinsk, 0), OPEN_H)            // 09:00
 
     // Если earliest > 20:00 сегодня — сегодня пропускаем целиком
     const dayClose = setHours(setMinutes(dayMinsk, 0), CLOSE_H)
@@ -458,8 +463,8 @@ export function generateSlots(nowUtc: Date, daysAhead = 7): Date[] {
 
 | Тип дня | Стоимость | Бесплатно от |
 |---|---|---|
-| Обычный день | 10 BYN (1 000 коп) | 80 BYN (8 000 коп) |
-| Праздничный день | 15 BYN (1 500 коп) | 150 BYN (15 000 коп) |
+| Обычный день | 10 BYN (1 000 коп) | 100 BYN (10 000 коп) |
+| Праздничный день | 15 BYN (1 500 коп) | — |
 
 **Праздничные дни** (день/месяц): 14/02, 08/03, 31/08, 01/09, 14/10, 31/12, 01/01.
 

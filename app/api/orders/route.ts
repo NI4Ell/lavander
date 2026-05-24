@@ -67,7 +67,7 @@ export async function POST(req: Request) {
 
     // Серверный пересчёт аддонов
     const postcardText = it.postcardText?.trim() ?? ''
-    const hasPostcard  = Boolean(it.hasPostcard) && postcardText.length > 0
+    const hasPostcard  = Boolean(it.hasPostcard)
     const hasAquabox   = Boolean(it.hasAquabox)
     const hasBag       = Boolean(it.hasBag)
 
@@ -87,7 +87,7 @@ export async function POST(req: Request) {
       quantity:        it.quantity,
 
       hasPostcard,
-      postcardText: hasPostcard ? postcardText : null,
+      postcardText: hasPostcard && postcardText.length > 0 ? postcardText : null,
       hasAquabox,
       hasBag,
       addonsPrice,

@@ -39,7 +39,7 @@ export default function CartView() {
     deliveryPrice: number
     isFree:        boolean
     isHoliday:     boolean
-    freeFrom:      number
+    freeFrom:      number | null
   } | null>(null)
 
   // ── Слоты ───────────────────────────────────────────

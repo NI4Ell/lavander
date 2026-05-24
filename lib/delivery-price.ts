@@ -15,18 +15,18 @@ const HOLIDAYS: readonly [number, number][] = [
 
 // Обычные дни
 const REGULAR_PRICE     = 1_000   // 10 BYN в копейках
-const REGULAR_FREE_FROM = 8_000   // 80 BYN в копейках
+const REGULAR_FREE_FROM = 10_000  // 100 BYN в копейках
 
-// Праздничные дни
+// Праздничные дни — бесплатной доставки нет
 const HOLIDAY_PRICE     = 1_500   // 15 BYN в копейках
-const HOLIDAY_FREE_FROM = 15_000  // 150 BYN в копейках
 
 /**
- * Возвращает порог бесплатной доставки (копейки) для праздничного/обычного дня.
+ * Возвращает порог бесплатной доставки (копейки) для обычного дня.
+ * В праздничные дни бесплатной доставки нет — возвращает null.
  * Используется в UI для информационной подсказки.
  */
-export function getDeliveryFreeFrom(isHoliday: boolean): number {
-  return isHoliday ? HOLIDAY_FREE_FROM : REGULAR_FREE_FROM
+export function getDeliveryFreeFrom(isHoliday: boolean): number | null {
+  return isHoliday ? null : REGULAR_FREE_FROM
 }
 
 /**
@@ -49,7 +49,7 @@ export function isHolidayDate(date: Date): boolean {
  */
 export function getDeliveryPrice(scheduledAt: Date, itemsTotal: number): number {
   if (isHolidayDate(scheduledAt)) {
-    return itemsTotal >= HOLIDAY_FREE_FROM ? 0 : HOLIDAY_PRICE
+    return HOLIDAY_PRICE  // праздники: всегда 15 BYN, порога бесплатности нет
   }
   return itemsTotal >= REGULAR_FREE_FROM ? 0 : REGULAR_PRICE
 }

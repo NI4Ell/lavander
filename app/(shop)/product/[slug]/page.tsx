@@ -38,7 +38,7 @@ export async function generateMetadata({
     title: `«${product.name}»`,
     description:
       product.description ??
-      `Купить букет «${product.name}» в Гомеле. Цена ${formatPrice(product.discountPrice ?? product.basePrice)}. Доставка от 90 минут.`,
+      `Купить букет «${product.name}» в Гомеле. Цена ${formatPrice(product.discountPrice ?? product.basePrice)}. Доставка от 180 минут.`,
     openGraph: {
       title: `«${product.name}» — Лавандер`,
       images: photoUrl ? [{ url: photoUrl }] : [],
@@ -139,7 +139,7 @@ export default async function ProductPage({
 
           {/* Shipping note */}
           <p className="text-[18px] text-ink-soft m-0">
-            ✿ доставка по Гомелю от 90 минут &nbsp;·&nbsp; фото перед отправкой
+            ✿ доставка по Гомелю от 180 минут &nbsp;·&nbsp; фото перед отправкой
           </p>
 
           {/* Disclaimer note */}
@@ -191,10 +191,10 @@ export default async function ProductPage({
 
             {/* Delivery & payment */}
             <Accordion title="Доставка и оплата">
-              Доставка по г. Гомелю — 10 BYN. Бесплатно при заказе от 80 BYN.
-              В праздничные дни — 15 BYN, бесплатно от 150 BYN.
+              Доставка по г. Гомелю — 10 BYN. Бесплатно при заказе от 100 BYN.
+              В праздничные дни — 15 BYN.
               Самовывоз по адресу: г. Гомель, ул. Речицкая, 2 — бесплатно.
-              Минимальный срок доставки — 90 минут.
+              Минимальный срок доставки — 180 минут.
               Оплата картой онлайн: Visa, Mastercard, Белкарт, Apple Pay, Samsung Pay.
             </Accordion>
 
