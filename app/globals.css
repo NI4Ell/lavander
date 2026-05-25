@@ -22,7 +22,13 @@
 /* ─── Global reset & base ───────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; }
 
-html, body {
+html {
+  background-color: #c9b6e4;
+  margin: 0; padding: 0;
+  min-height: 100vh;
+}
+
+body {
   margin: 0; padding: 0;
   background: var(--color-bg);
   color: var(--color-ink);
