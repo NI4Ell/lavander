@@ -69,7 +69,7 @@ export default function AboutPage() {
             Наши флористы — это про открытость, душевность и клиентоориентированность. Мы рады быть частичкой Вашего праздника и всегда хотим видеть радость в Ваших глазах.
           </p>
         </div>
-        <div className="relative self-stretch rounded-[18px] overflow-hidden">
+        <div className="relative self-stretch rounded-[18px] overflow-hidden max-md:h-[300px]">
           <Image
             src="/about/hero.jpg"
             alt="Мастерская Лавандер"
