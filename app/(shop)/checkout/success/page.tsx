@@ -46,10 +46,10 @@ export default async function CheckoutSuccessPage({
           спасибо!
         </p>
         <h1 className="text-[44px] text-purple font-bold mt-1 mb-3 max-md:text-[30px]">
-          ✅ Заказ № {order.publicNumber} принят!
+          Заказ № {order.publicNumber} принят!
         </h1>
         <p className="text-[18px] text-ink-soft m-0 mb-5 leading-relaxed">
-          Флористы уже получили уведомление. Ожидайте звонка для подтверждения.
+          Флористы уже приступают к сборке букета.
         </p>
 
         <div className="grid grid-cols-2 gap-3 text-left mb-6 max-md:grid-cols-1">
