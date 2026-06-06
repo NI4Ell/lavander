@@ -29,7 +29,7 @@ export default function ProductCard({
 
       {/* 1. Photo ────────────────────────────── */}
       <Link href={`/product/${slug}`} className="w-full block">
-        <div className="relative w-full aspect-[4/5] rounded-[4px] overflow-hidden border-[1.5px] border-ink mb-1 bg-paper-2">
+        <div className="relative w-full aspect-[4/5] rounded-[4px] overflow-hidden mb-1 bg-paper-2">
           {photoUrl ? (
             <Image
               src={photoUrl}

@@ -87,30 +87,37 @@ export default function PaymentPage() {
           Возврат средств
         </h2>
 
-        <div className="grid grid-cols-2 gap-4 max-md:grid-cols-1">
-          {/* До начала сборки */}
-          <div className="border-[1.5px] border-ink rounded-[14px] px-6 py-5 bg-paper">
-            <p className="text-[18px] font-semibold text-ink m-0 mb-2">До начала сборки</p>
-            <p className="text-[15px] text-ink-soft leading-[1.55] m-0">
-              Полный возврат оплаченной суммы в течение <strong>от 1 до 30 дней</strong> на карту,
-              с которой производилась оплата. Для отмены заказа свяжитесь с нами как можно скорее.
-            </p>
-          </div>
-
-          {/* После начала сборки */}
-          <div className="border-[1.5px] border-ink rounded-[14px] px-6 py-5 bg-paper">
-            <p className="text-[18px] font-semibold text-ink m-0 mb-2">После начала сборки</p>
-            <p className="text-[15px] text-ink-soft leading-[1.55] m-0">
-              Возврат — по согласованию с флористом. Позвоните нам:{' '}
+        <ul className="flex flex-col gap-3 m-0 p-0 list-none text-left mb-5">
+          <li className="flex gap-3 items-start text-[16px] leading-[1.5] text-ink-soft">
+            <span className="text-purple shrink-0 mt-[3px]">—</span>
+            <span>Цветочная продукция надлежащего качества обмену и возврату не подлежит.</span>
+          </li>
+          <li className="flex gap-3 items-start text-[16px] leading-[1.5] text-ink-soft">
+            <span className="text-purple shrink-0 mt-[3px]">—</span>
+            <span>
+              Возврат денежных средств возможен в случаях: заказ не был выполнен по вине магазина;
+              заказ не может быть исполнен по вине Продавца.
+            </span>
+          </li>
+          <li className="flex gap-3 items-start text-[16px] leading-[1.5] text-ink-soft">
+            <span className="text-purple shrink-0 mt-[3px]">—</span>
+            <span>
+              Возврат осуществляется на карту, с которой производилась оплата,
+              в течение <strong>от 1 до 30 дней</strong>.
+            </span>
+          </li>
+          <li className="flex gap-3 items-start text-[16px] leading-[1.5] text-ink-soft">
+            <span className="text-purple shrink-0 mt-[3px]">—</span>
+            <span>
+              По вопросам возврата:{' '}
               <a href="tel:+375291190699" className="text-purple hover:underline font-medium">
                 +375&nbsp;(29)&nbsp;119-06-99
-              </a>.
-              Постараемся найти оптимальное решение для каждой ситуации.
-            </p>
-          </div>
-        </div>
+              </a>
+            </span>
+          </li>
+        </ul>
 
-        <p className="text-[14px] text-ink-soft text-center m-0 mt-5 leading-relaxed">
+        <p className="text-[14px] text-ink-soft text-center m-0 leading-relaxed">
           Возврат средств осуществляется в соответствии с законодательством Республики Беларусь
           и условиями{' '}
           <Link href="/oferta" className="text-purple hover:underline">публичной оферты</Link>.
