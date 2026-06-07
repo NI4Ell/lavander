@@ -32,6 +32,35 @@ export default function RootLayout({
   return (
     <html lang="ru" className={jost.variable}>
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FloristShop",
+              "name": "Лавандер",
+              "description": "Букетная мастерская в Гомеле. Свежие цветы, сборные букеты, монобукеты, доставка по Гомелю.",
+              "url": "https://lavander.by",
+              "telephone": "+375291190699",
+              "email": "lavander.gomel@mail.ru",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "ул. Речицкая, 2",
+                "addressLocality": "Гомель",
+                "addressCountry": "BY",
+                "postalCode": "246050"
+              },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": "52.423119",
+                "longitude": "30.999243"
+              },
+              "openingHours": "Mo-Su 09:00-20:00",
+              "priceRange": "$$",
+              "image": "https://lavander.by/og-image.jpg"
+            })
+          }}
+        />
         {children}
         <YandexMetrika />
       </body>
