@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 export const metadata: Metadata = {
   title: 'О нас',
-  description: 'Букетная мастерская «Лавандер» в Гомеле. С 2018 года делаем букеты вручную — без шаблонов и наспех.',
+  description: 'Букетная мастерская «Лавандер» в Гомеле. Делаем букеты вручную — без шаблонов и наспех. Доставка по Гомелю.',
 }
 
 // crosshatch placeholder — повторяет .ph.x из дизайна
@@ -26,13 +26,6 @@ const PH = ({ className = '', children }: { className?: string; children?: React
     <span className="relative z-10">{children}</span>
   </div>
 )
-
-const STATS = [
-  { value: '2018',    label: 'с этого года' },
-  { value: '12 000+', label: 'собранных букетов' },
-  { value: '3',       label: 'флориста в команде' },
-  { value: '90 мин',  label: 'средняя доставка' },
-]
 
 const PRINCIPLES = [
   {
