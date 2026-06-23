@@ -9,6 +9,7 @@ const CATEGORIES = [
   { key: 'mono',    label: 'монобукеты' },
   { key: 'box',     label: 'композиции в коробках' },
   { key: 'basket',  label: 'композиции в корзинах' },
+  { key: 'wedding', label: 'свадебные букеты' },
 ] as const
 
 type CatKey = (typeof CATEGORIES)[number]['key']

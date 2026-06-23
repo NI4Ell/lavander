@@ -209,7 +209,7 @@ export async function addProductWizard(
       return
     }
     const value = data.slice('cat:'.length) as Category
-    if (!['BOUQUET', 'MONO', 'BOX', 'BASKET'].includes(value)) {
+    if (!['BOUQUET', 'MONO', 'BOX', 'BASKET', 'WEDDING'].includes(value)) {
       await cbCtx.reply('Неизвестная категория, выбери из списка.')
       continue
     }

@@ -62,6 +62,7 @@ export const CATEGORY_LABEL: Record<Category, string> = {
   MONO:    'Моно',
   BOX:     'Коробка',
   BASKET:  'Корзина',
+  WEDDING: 'Свадебные букеты',
 }
 
 /** Эмодзи-иконка статуса товара — для компактного отображения в списке. */
@@ -108,6 +109,7 @@ export function addCategoryKeyboard(): InlineKeyboardMarkup {
         { text: CATEGORY_LABEL.BOX,     callback_data: 'cat:BOX'     },
         { text: CATEGORY_LABEL.BASKET,  callback_data: 'cat:BASKET'  },
       ],
+      [{ text: CATEGORY_LABEL.WEDDING, callback_data: 'cat:WEDDING' }],
       [{ text: '❌ Отмена', callback_data: 'add:cancel' }],
     ],
   }

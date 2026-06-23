@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 }
 
 // ── Types ────────────────────────────────────────────────
-type CatKey = 'vitrina' | 'bouquet' | 'mono' | 'box' | 'basket'
+type CatKey = 'vitrina' | 'bouquet' | 'mono' | 'box' | 'basket' | 'wedding'
 
 interface Section {
   key:           CatKey
@@ -23,6 +23,7 @@ const SECTIONS: Section[] = [
   { key: 'mono',    label: 'Монобукеты' },
   { key: 'box',     label: 'Композиции в коробках' },
   { key: 'basket',  label: 'Композиции в корзинах' },
+  { key: 'wedding', label: 'Свадебные букеты' },
 ]
 
 const CAT_ENUM: Record<Exclude<CatKey, 'vitrina'>, Category> = {
@@ -30,6 +31,7 @@ const CAT_ENUM: Record<Exclude<CatKey, 'vitrina'>, Category> = {
   mono:    'MONO',
   box:     'BOX',
   basket:  'BASKET',
+  wedding: 'WEDDING',
 }
 
 // ── Data fetching ────────────────────────────────────────

@@ -13,6 +13,7 @@ const CAT_LABELS: Record<string, { label: string; href: string }> = {
   MONO:    { label: 'монобукеты',     href: '/?cat=mono'    },
   BOX:     { label: 'композиции в коробках', href: '/?cat=box' },
   BASKET:  { label: 'композиции в корзинах', href: '/?cat=basket' },
+  WEDDING: { label: 'свадебные букеты', href: '/?cat=wedding' },
 }
 
 // ── Metadata ─────────────────────────────────────────────
