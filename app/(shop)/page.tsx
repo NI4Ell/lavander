@@ -4,7 +4,7 @@ import { Category, type ProductStatus } from '@prisma/client'
 import CatalogSection from '@/components/catalog/CatalogSection'
 
 export const metadata: Metadata = {
-  title: 'Букеты в Гомеле | Лавандер — букетная мастерская',
+  title: { absolute: 'Букеты в Гомеле | Лавандер — букетная мастерская' },
   description: 'Каталог свежих букетов и цветочных композиций. Сборные букеты, монобукеты, композиции в коробках и корзинах. Доставка по Гомелю.',
 }
 
